@@ -3,24 +3,11 @@ const mysql = require('mysql2/promise');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const multer = require('multer');
-const cloudinary = require('cloudinary').v2;
 require('dotenv').config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-
-// --- CLOUDINARY CONFIGURATION ---
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET
-});
-
-// Multer setup for temporary image storage in memory
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
 
 // --- DATABASE CONNECTION ---
 const pool = mysql.createPool({
@@ -38,7 +25,6 @@ async function initDB() {
         const connection = await pool.getConnection();
         console.log('✅ Connected to TiDB Cloud Database securely!');
         
-        // 1. Users Table
         await connection.query(`
             CREATE TABLE IF NOT EXISTS users (
                 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -50,7 +36,6 @@ async function initDB() {
             )
         `);
 
-        // 2. Products Table
         await connection.query(`
             CREATE TABLE IF NOT EXISTS products (
                 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -63,7 +48,6 @@ async function initDB() {
             )
         `);
 
-        // 3. Orders Table
         await connection.query(`
             CREATE TABLE IF NOT EXISTS orders (
                 id VARCHAR(50) PRIMARY KEY,
@@ -77,15 +61,15 @@ async function initDB() {
             )
         `);
 
-        // Create a default Admin user if one doesn't exist
+        // Default Admin (Phone: 0720470412, Pass: admin123)
         const [adminRows] = await connection.query("SELECT * FROM users WHERE role = 'admin'");
         if (adminRows.length === 0) {
             const hashedPassword = await bcrypt.hash('admin123', 10);
             await connection.query(
                 "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
-                ['Admin', 'admin@chutzpah.com', hashedPassword, 'admin']
+                ['Admin', '0720470412', hashedPassword, 'admin']
             );
-            console.log('✅ Default Admin created (admin@chutzpah.com / admin123)');
+            console.log('✅ Default Admin created (0720470412 / admin123)');
         }
 
         console.log('✅ Tables ready.');
@@ -110,26 +94,26 @@ const verifyToken = (req, res, next) => {
 
 // --- API ROUTES ---
 
-// 1. REGISTER USER
+// 1. REGISTER
 app.post('/api/register', async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, phone, password } = req.body;
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
         await pool.query(
             "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
-            [name, email, hashedPassword]
+            [name, phone, hashedPassword]
         );
         res.status(201).json({ success: true, message: "Account created!" });
     } catch (err) {
-        res.status(500).json({ success: false, message: "Email already exists." });
+        res.status(500).json({ success: false, message: "Phone number already exists." });
     }
 });
 
-// 2. LOGIN USER
+// 2. LOGIN
 app.post('/api/login', async (req, res) => {
-    const { email, password } = req.body;
+    const { phone, password } = req.body;
     try {
-        const [users] = await pool.query("SELECT * FROM users WHERE email = ?", [email]);
+        const [users] = await pool.query("SELECT * FROM users WHERE email = ?", [phone]);
         if (users.length === 0) return res.status(404).json({ message: "User not found" });
 
         const user = users[0];
@@ -137,13 +121,13 @@ app.post('/api/login', async (req, res) => {
         if (!validPassword) return res.status(401).json({ message: "Invalid password" });
 
         const token = jwt.sign({ id: user.id, role: user.role, name: user.name }, process.env.JWT_SECRET, { expiresIn: '24h' });
-        res.json({ success: true, token, user: { id: user.id, name: user.name, email: user.email, role: user.role } });
+        res.json({ success: true, token, user: { id: user.id, name: user.name, phone: user.email, role: user.role } });
     } catch (err) {
         res.status(500).json({ success: false, message: "Server error" });
     }
 });
 
-// 3. GET ALL PRODUCTS (Public)
+// 3. GET ALL PRODUCTS
 app.get('/api/products', async (req, res) => {
     try {
         const [products] = await pool.query("SELECT * FROM products WHERE is_hidden = FALSE ORDER BY created_at DESC");
@@ -153,33 +137,7 @@ app.get('/api/products', async (req, res) => {
     }
 });
 
-// 4. ADMIN: ADD PRODUCT WITH IMAGE
-app.post('/api/products', verifyToken, upload.single('image'), async (req, res) => {
-    if (req.user.role !== 'admin') return res.status(403).json({ message: "Admin only" });
-
-    const { name, category, price } = req.body;
-    let image_url = null;
-
-    try {
-        if (req.file) {
-            const b64 = Buffer.from(req.file.buffer).toString("base64");
-            let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
-            const result = await cloudinary.uploader.upload(dataURI, { folder: "chutzpah_products" });
-            image_url = result.secure_url;
-        }
-
-        await pool.query(
-            "INSERT INTO products (name, category, price, image_url) VALUES (?, ?, ?, ?)",
-            [name, category, price, image_url]
-        );
-        res.status(201).json({ success: true, message: "Product added!" });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ success: false, message: "Failed to add product" });
-    }
-});
-
-// 5. ADMIN: HIDE/SHOW PRODUCT
+// 4. ADMIN: HIDE/SHOW PRODUCT
 app.put('/api/products/:id/toggle', verifyToken, async (req, res) => {
     if (req.user.role !== 'admin') return res.status(403).json({ message: "Admin only" });
     const { is_hidden } = req.body;
@@ -191,7 +149,7 @@ app.put('/api/products/:id/toggle', verifyToken, async (req, res) => {
     }
 });
 
-// 6. ADMIN: UPDATE PRICE (NEW ROUTE)
+// 5. ADMIN: UPDATE PRICE
 app.put('/api/products/:id/price', verifyToken, async (req, res) => {
     if (req.user.role !== 'admin') return res.status(403).json({ message: "Admin only" });
     const { price } = req.body;
@@ -203,7 +161,7 @@ app.put('/api/products/:id/price', verifyToken, async (req, res) => {
     }
 });
 
-// 7. CREATE ORDER
+// 6. CREATE ORDER
 app.post('/api/orders', async (req, res) => {
     const { orderId, customerName, phone, items, total } = req.body;
     try {
