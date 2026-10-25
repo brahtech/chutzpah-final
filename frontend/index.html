@@ -80,6 +80,11 @@
         .toast { position: fixed; bottom: 20px; right: 20px; background: #8B0000; color: white; padding: 0.75rem 1.25rem; border-radius: 8px; z-index: 1100; animation: slideIn 0.3s ease; }
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         
+        /* Admin Tabs */
+        .admin-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
+        .admin-tab { padding: 0.5rem 1rem; cursor: pointer; background: #f0f0f0; border: none; border-radius: 8px; font-weight: bold; }
+        .admin-tab.active { background: #8B0000; color: white; }
+        
         @media (max-width: 768px) { .container { padding: 0 1rem; } .product-grid { grid-template-columns: 1fr; } .header-content { flex-direction: column; } }
     </style>
 </head>
@@ -174,7 +179,6 @@
     </div>
 
     <script>
-        // THE LIVE RENDER BACKEND URL
         const API_URL = 'https://chutzpah-final.onrender.com';
 
         let products = [];
@@ -183,7 +187,6 @@
         let userToken = localStorage.getItem('chutzpah_token') || null;
         let currentCategory = 'Badges';
 
-        // --- INITIALIZATION ---
         async function init() {
             loadCart();
             if (userToken) {
@@ -193,7 +196,6 @@
             await fetchProducts();
         }
 
-        // --- FETCH PRODUCTS ---
         async function fetchProducts() {
             try {
                 const res = await fetch(`${API_URL}/api/products`);
@@ -234,7 +236,7 @@
             `).join('');
         }
 
-        // --- CART LOGIC ---
+        // --- CART ---
         function loadCart() {
             cart = JSON.parse(localStorage.getItem('chutzpah_cart')) || [];
             updateCartUI();
@@ -284,7 +286,6 @@
             document.getElementById('cartTotal').innerText = `Total: KES ${total.toLocaleString()}`;
         }
 
-        // --- CHECKOUT ---
         async function processCheckout() {
             if (cart.length === 0) return showToast('Cart is empty');
             const phone = document.getElementById('phoneNumber').value;
@@ -322,7 +323,7 @@
             }
         }
 
-        // --- AUTHENTICATION ---
+        // --- AUTH ---
         function openUserModal() {
             const body = document.getElementById('userModalBody');
             if (currentUser) {
@@ -431,81 +432,117 @@
 
         function closeUserModal() { document.getElementById('userModal').classList.remove('active'); }
 
-        // --- ADMIN DASHBOARD ---
+        // --- ADMIN DASHBOARD (Restored with Tabs) ---
         function openAdminDashboard() {
             if (!currentUser || currentUser.role !== 'admin') return showToast('Access Denied');
             
             const body = document.getElementById('adminModalBody');
             body.innerHTML = `
-                <h4>➕ Add New Product</h4>
-                <form id="addProductForm" style="margin-top:1rem; margin-bottom:2rem; border-bottom:1px solid #ddd; padding-bottom:1rem;">
-                    <div class="form-group"><label>Product Name</label><input type="text" id="pName" required></div>
-                    <div class="form-group"><label>Price (KES)</label><input type="number" id="pPrice" required></div>
-                    <div class="form-group">
-                        <label>Category</label>
-                        <select id="pCategory">
-                            <option value="Badges">Badges & Pins</option>
-                            <option value="Patches">Patches</option>
-                            <option value="Branding">Branding</option>
-                            <option value="Accessories">Accessories</option>
-                        </select>
-                    </div>
-                    <div class="form-group"><label>Upload Image (Optional)</label><input type="file" id="pImage" accept="image/*"></div>
-                    <button type="button" class="btn-primary" onclick="addProduct()">Upload Product</button>
-                </form>
-                <h4>📦 Manage Products</h4>
-                <div id="adminProductList"></div>
+                <div class="admin-tabs">
+                    <button class="admin-tab active" onclick="switchAdminTab('products', this)">📦 Manage Products</button>
+                    <button class="admin-tab" onclick="switchAdminTab('orders', this)">📋 Recent Orders</button>
+                    <button class="admin-tab" onclick="switchAdminTab('tenders', this)">📝 Tender Requests</button>
+                    <button class="admin-tab" onclick="switchAdminTab('reports', this)">📊 Sales Report</button>
+                </div>
+                <div id="adminContent"></div>
             `;
-            renderAdminProducts();
+            switchAdminTab('products', document.querySelector('.admin-tab'));
             document.getElementById('adminModal').classList.add('active');
         }
 
-        function renderAdminProducts() {
-            const list = document.getElementById('adminProductList');
-            if(products.length === 0) return list.innerHTML = '<p>No products yet.</p>';
+        function switchAdminTab(tabName, btnElement) {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            btnElement.classList.add('active');
             
-            list.innerHTML = products.map(p => `
-                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #eee; padding:0.5rem 0;">
+            const content = document.getElementById('adminContent');
+            
+            if (tabName === 'products') {
+                content.innerHTML = renderAdminProductsHTML();
+            } else if (tabName === 'orders') {
+                content.innerHTML = renderAdminOrdersHTML();
+            } else if (tabName === 'tenders') {
+                content.innerHTML = renderAdminTendersHTML();
+            } else if (tabName === 'reports') {
+                content.innerHTML = renderAdminReportsHTML();
+            }
+        }
+
+        function renderAdminProductsHTML() {
+            if(products.length === 0) return '<p>No products yet.</p>';
+            
+            return products.map(p => `
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #eee; padding:0.75rem 0;">
                     <div>
-                        <strong>${p.name}</strong> - KES ${p.price} (${p.category})<br>
-                        <span style="font-size:0.7rem; color:${p.is_hidden ? 'red' : 'green'}">${p.is_hidden ? 'Hidden from store' : 'Visible in store'}</span>
+                        <strong>${p.name}</strong> - KES ${p.price} <br>
+                        <span style="font-size:0.7rem; color:${p.is_hidden ? 'red' : 'green'}">${p.is_hidden ? 'Hidden' : 'Visible'}</span>
                     </div>
-                    <button onclick="toggleProduct(${p.id}, ${p.is_hidden})" style="background:#ff9800;color:white;border:none;padding:0.25rem 0.5rem;border-radius:4px;cursor:pointer;">
-                        ${p.is_hidden ? 'Show' : 'Hide'}
-                    </button>
+                    <div style="display:flex; gap:0.5rem;">
+                        <button onclick="editPrice(${p.id}, ${p.price})" style="background:#4CAF50;color:white;border:none;padding:0.25rem 0.5rem;border-radius:4px;cursor:pointer;">✏️ Edit Price</button>
+                        <button onclick="toggleProduct(${p.id}, ${p.is_hidden})" style="background:#ff9800;color:white;border:none;padding:0.25rem 0.5rem;border-radius:4px;cursor:pointer;">
+                            ${p.is_hidden ? 'Show' : 'Hide'}
+                        </button>
+                    </div>
                 </div>
             `).join('');
         }
 
-        async function addProduct() {
-            const name = document.getElementById('pName').value;
-            const price = document.getElementById('pPrice').value;
-            const category = document.getElementById('pCategory').value;
-            const fileInput = document.getElementById('pImage');
+        function renderAdminOrdersHTML() {
+            const localOrders = JSON.parse(localStorage.getItem('chutzpah_orders') || '[]');
+            if (localOrders.length === 0) return '<p>No orders yet.</p>';
+            return localOrders.map(o => `
+                <div style="border:1px solid #eee; padding:0.75rem; margin-bottom:0.5rem; border-radius:8px;">
+                    <strong>${o.orderId}</strong> - ${o.date}<br>
+                    Items: ${o.items.length} | Total: KES ${o.total.toLocaleString()}<br>
+                    Status: ${o.status} | Phone: ${o.phone || 'N/A'}
+                </div>
+            `).join('');
+        }
 
-            const formData = new FormData();
-            formData.append('name', name);
-            formData.append('price', price);
-            formData.append('category', category);
-            if (fileInput.files[0]) formData.append('image', fileInput.files[0]);
+        function renderAdminTendersHTML() {
+            const tenders = JSON.parse(localStorage.getItem('chutzpah_tenders') || '[]');
+            if (tenders.length === 0) return '<p>No tender requests yet.</p>';
+            return tenders.map(t => `
+                <div style="border:1px solid #eee; padding:0.75rem; margin-bottom:0.5rem; border-radius:8px;">
+                    <strong>${t.id}</strong> - ${t.date}<br>
+                    Organization: ${t.org}<br>
+                    Item: ${t.item}<br>
+                    Contact: ${t.name} (${t.email}, ${t.phone})<br>
+                </div>
+            `).join('');
+        }
+
+        function renderAdminReportsHTML() {
+            const localOrders = JSON.parse(localStorage.getItem('chutzpah_orders') || '[]');
+            const totalRevenue = localOrders.reduce((sum, o) => sum + o.total, 0);
+            return `
+                <div style="background:#f5f5f5; padding:1rem; border-radius:12px; text-align:center;">
+                    <h2 style="color:#8B0000;">KES ${totalRevenue.toLocaleString()}</h2>
+                    <p>Total Revenue</p>
+                </div>
+                <div style="margin-top:1rem; text-align:center;">
+                    <p><strong>Total Orders:</strong> ${localOrders.length}</p>
+                </div>
+            `;
+        }
+
+        async function editPrice(id, currentPrice) {
+            const newPrice = prompt("Enter new price (KES):", currentPrice);
+            if (!newPrice || isNaN(newPrice)) return;
 
             try {
-                const res = await fetch(`${API_URL}/api/products`, {
-                    method: 'POST',
-                    headers: { 'Authorization': userToken },
-                    body: formData
+                const res = await fetch(`${API_URL}/api/products/${id}/price`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': userToken },
+                    body: JSON.stringify({ price: newPrice })
                 });
                 if (res.ok) {
-                    showToast('Product added successfully!');
-                    document.getElementById('addProductForm').reset();
-                    await fetchProducts(); 
-                    renderAdminProducts(); 
+                    showToast('Price updated!');
+                    await fetchProducts();
+                    switchAdminTab('products', document.querySelector('.admin-tab')); // Refresh tab
                 } else {
-                    showToast('Failed to add product.');
+                    showToast('Failed to update price.');
                 }
-            } catch (err) {
-                showToast('Network error. Backend might be asleep.');
-            }
+            } catch (err) { showToast('Error updating price'); }
         }
 
         async function toggleProduct(id, currentHiddenStatus) {
@@ -517,7 +554,7 @@
                 });
                 if (res.ok) {
                     await fetchProducts();
-                    renderAdminProducts();
+                    switchAdminTab('products', document.querySelector('.admin-tab'));
                     showToast('Visibility updated');
                 }
             } catch (err) { showToast('Error updating product'); }
@@ -534,7 +571,6 @@
             setTimeout(() => toast.remove(), 3000);
         }
 
-        // Run Init
         init();
     </script>
 </body>
