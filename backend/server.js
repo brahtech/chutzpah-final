@@ -38,7 +38,7 @@ async function initDB() {
         const connection = await pool.getConnection();
         console.log('✅ Connected to TiDB Cloud Database securely!');
         
-        // Users Table
+        // 1. Users Table
         await connection.query(`
             CREATE TABLE IF NOT EXISTS users (
                 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -50,7 +50,7 @@ async function initDB() {
             )
         `);
 
-        // Products Table
+        // 2. Products Table
         await connection.query(`
             CREATE TABLE IF NOT EXISTS products (
                 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -63,7 +63,7 @@ async function initDB() {
             )
         `);
 
-        // Orders Table
+        // 3. Orders Table
         await connection.query(`
             CREATE TABLE IF NOT EXISTS orders (
                 id VARCHAR(50) PRIMARY KEY,
@@ -77,7 +77,7 @@ async function initDB() {
             )
         `);
 
-        // Create default Admin
+        // Create a default Admin user if one doesn't exist
         const [adminRows] = await connection.query("SELECT * FROM users WHERE role = 'admin'");
         if (adminRows.length === 0) {
             const hashedPassword = await bcrypt.hash('admin123', 10);
@@ -110,7 +110,7 @@ const verifyToken = (req, res, next) => {
 
 // --- API ROUTES ---
 
-// REGISTER USER
+// 1. REGISTER USER
 app.post('/api/register', async (req, res) => {
     const { name, email, password } = req.body;
     try {
@@ -125,7 +125,7 @@ app.post('/api/register', async (req, res) => {
     }
 });
 
-// LOGIN USER
+// 2. LOGIN USER
 app.post('/api/login', async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -143,7 +143,7 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
-// GET ALL PRODUCTS (Public)
+// 3. GET ALL PRODUCTS (Public)
 app.get('/api/products', async (req, res) => {
     try {
         const [products] = await pool.query("SELECT * FROM products WHERE is_hidden = FALSE ORDER BY created_at DESC");
@@ -153,7 +153,7 @@ app.get('/api/products', async (req, res) => {
     }
 });
 
-// ADMIN: ADD PRODUCT WITH IMAGE
+// 4. ADMIN: ADD PRODUCT WITH IMAGE
 app.post('/api/products', verifyToken, upload.single('image'), async (req, res) => {
     if (req.user.role !== 'admin') return res.status(403).json({ message: "Admin only" });
 
@@ -179,7 +179,7 @@ app.post('/api/products', verifyToken, upload.single('image'), async (req, res) 
     }
 });
 
-// ADMIN: HIDE/SHOW PRODUCT
+// 5. ADMIN: HIDE/SHOW PRODUCT
 app.put('/api/products/:id/toggle', verifyToken, async (req, res) => {
     if (req.user.role !== 'admin') return res.status(403).json({ message: "Admin only" });
     const { is_hidden } = req.body;
@@ -191,7 +191,19 @@ app.put('/api/products/:id/toggle', verifyToken, async (req, res) => {
     }
 });
 
-// CREATE ORDER
+// 6. ADMIN: UPDATE PRICE (NEW ROUTE)
+app.put('/api/products/:id/price', verifyToken, async (req, res) => {
+    if (req.user.role !== 'admin') return res.status(403).json({ message: "Admin only" });
+    const { price } = req.body;
+    try {
+        await pool.query("UPDATE products SET price = ? WHERE id = ?", [price, req.params.id]);
+        res.json({ success: true, message: "Price updated" });
+    } catch (err) {
+        res.status(500).json({ success: false, message: "Failed to update price" });
+    }
+});
+
+// 7. CREATE ORDER
 app.post('/api/orders', async (req, res) => {
     const { orderId, customerName, phone, items, total } = req.body;
     try {
