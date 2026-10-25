@@ -187,22 +187,20 @@
         async function init() {
             loadCart();
             if (userToken) {
-                // If token exists, assume logged in (for simplicity, ideally we verify token)
                 currentUser = JSON.parse(localStorage.getItem('chutzpah_user'));
                 updateUserUI();
             }
             await fetchProducts();
         }
 
-        // --- FETCH PRODUCTS FROM BACKEND ---
+        // --- FETCH PRODUCTS ---
         async function fetchProducts() {
             try {
                 const res = await fetch(`${API_URL}/api/products`);
                 products = await res.json();
                 renderProducts();
             } catch (err) {
-                console.error(err);
-                document.getElementById('productGrid').innerHTML = '<p style="color:red;text-align:center;width:100%;">Failed to load products. Backend might be waking up.</p>';
+                document.getElementById('productGrid').innerHTML = '<p style="color:red;text-align:center;width:100%;">Failed to load products. Backend might be waking up (wait 30s and refresh).</p>';
             }
         }
 
@@ -500,8 +498,8 @@
                 if (res.ok) {
                     showToast('Product added successfully!');
                     document.getElementById('addProductForm').reset();
-                    await fetchProducts(); // Refresh global products list
-                    renderAdminProducts(); // Refresh admin list
+                    await fetchProducts(); 
+                    renderAdminProducts(); 
                 } else {
                     showToast('Failed to add product.');
                 }
