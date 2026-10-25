@@ -18,9 +18,8 @@
         .cart-icon, .user-icon, .admin-icon, .contact-icon { position: relative; cursor: pointer; background: rgba(255,255,255,0.2); padding: 0.75rem 1.25rem; border-radius: 50px; transition: all 0.3s; }
         .cart-icon:hover, .user-icon:hover, .admin-icon:hover, .contact-icon:hover { background: rgba(255,255,255,0.3); }
         .cart-count { position: absolute; top: -8px; right: -8px; background: #ff6b35; color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: bold; }
-        .user-name { font-size: 0.8rem; margin-left: 0.5rem; }
         
-        /* Main Container */
+        /* Main */
         .container { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
         .business-banner { background: white; border-radius: 16px; padding: 1rem 1.5rem; margin-bottom: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
         .business-info { display: flex; gap: 2rem; flex-wrap: wrap; }
@@ -32,11 +31,10 @@
         .category-btn { flex: 1; padding: 1rem; background: white; border: 2px solid #ddd; border-radius: 12px; cursor: pointer; transition: all 0.3s; text-align: center; }
         .category-btn.active { border-color: #8B0000; background: linear-gradient(135deg, #fff5f5, #ffebeb); box-shadow: 0 4px 12px rgba(139,0,0,0.2); }
         .category-btn h3 { font-size: 1.1rem; margin-bottom: 0.25rem; }
-        .category-btn p { font-size: 0.75rem; color: #666; }
         
-        /* Product Grid */
+        /* Products */
         .products-section { background: white; border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .section-title { font-size: 1.3rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #8B0000; color: #8B0000; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .section-title { font-size: 1.3rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #8B0000; color: #8B0000; }
         .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
         .product-card { border: 1px solid #eee; border-radius: 12px; padding: 1rem; transition: transform 0.2s, box-shadow 0.2s; background: white; }
         .product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
@@ -64,13 +62,11 @@
         @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .modal-header { background: #8B0000; color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; }
         .modal-body { padding: 1rem; max-height: 60vh; overflow-y: auto; }
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; margin-bottom: 0.25rem; font-weight: bold; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        .form-group input, .form-group select { width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; margin-bottom: 0.5rem; }
         .btn-primary { background: #8B0000; color: white; border: none; padding: 0.75rem; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; }
         .btn-danger { background: #ff4444; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; }
         
-        /* Cart & Toast */
+        /* Cart */
         .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; border-bottom: 1px solid #eee; }
         .cart-item-info { flex: 1; }
         .cart-item-name { font-weight: bold; }
@@ -139,12 +135,38 @@
         </div>
     </div>
 
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>🛡️ CHUTZPAH ENTERPRISES</h4>
+                <p>Branding & General Trade</p>
+                <p>Since 2016</p>
+            </div>
+            <div class="footer-section">
+                <h4>📍 Visit Us</h4>
+                <p>Johannesburg Plaza, 2nd fl. Rm 7</p>
+                <p>Eldoret, Kenya</p>
+                <p>P.O. Box 7113 - 30100, Eldoret</p>
+            </div>
+            <div class="footer-section">
+                <h4>📞 Contact</h4>
+                <p>+254 720 470412</p>
+                <p>+254 733 437235</p>
+                <p>chutzpahenterprises@gmail.com</p>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2016-2025 Chutzpah Enterprises | "Guts, Audacity, Willingness to fly in the face of opposition"
+        </div>
+    </div>
+
     <!-- Modals -->
     <div class="modal" id="userModal">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 id="userModalTitle">👤 My Account</h3>
-                <button onclick="closeUserModal()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">&times;</button>
+                <button onclick="closeModal('userModal')" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">&times;</button>
             </div>
             <div class="modal-body" id="userModalBody"></div>
         </div>
@@ -154,11 +176,9 @@
         <div class="modal-content large">
             <div class="modal-header">
                 <h3>🔧 Admin Dashboard</h3>
-                <button onclick="closeAdminModal()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">&times;</button>
+                <button onclick="closeModal('adminModal')" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">&times;</button>
             </div>
-            <div class="modal-body" id="adminModalBody">
-                <!-- Admin Content Injected Here -->
-            </div>
+            <div class="modal-body" id="adminModalBody"></div>
         </div>
     </div>
 
@@ -166,7 +186,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3>🛒 Your Cart</h3>
-                <button onclick="closeCart()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">&times;</button>
+                <button onclick="closeModal('cartModal')" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">&times;</button>
             </div>
             <div class="modal-body" id="cartItemsContainer"></div>
             <div class="cart-total" id="cartTotal">Total: KES 0</div>
@@ -180,12 +200,7 @@
 
     <script>
         const API_URL = 'https://chutzpah-final.onrender.com';
-
-        let products = [];
-        let cart = [];
-        let currentUser = null;
-        let userToken = localStorage.getItem('chutzpah_token') || null;
-        let currentCategory = 'Badges';
+        let products = [], cart = [], currentUser = null, userToken = localStorage.getItem('chutzpah_token') || null, currentCategory = 'Badges';
 
         async function init() {
             loadCart();
@@ -202,7 +217,7 @@
                 products = await res.json();
                 renderProducts();
             } catch (err) {
-                document.getElementById('productGrid').innerHTML = '<p style="color:red;text-align:center;width:100%;">Failed to load products. Backend might be waking up (wait 30s and refresh).</p>';
+                document.getElementById('productGrid').innerHTML = '<p style="color:red;text-align:center;width:100%;">Failed to load products. Backend might be waking up.</p>';
             }
         }
 
@@ -260,9 +275,6 @@
             displayCart();
             document.getElementById('cartModal').classList.add('active');
         }
-        function closeCart() {
-            document.getElementById('cartModal').classList.remove('active');
-        }
         function displayCart() {
             const container = document.getElementById('cartItemsContainer');
             if (cart.length === 0) {
@@ -310,7 +322,7 @@
                     cart = [];
                     localStorage.setItem('chutzpah_cart', JSON.stringify(cart));
                     updateCartUI();
-                    closeCart();
+                    closeModal('cartModal');
                     showToast('✅ Order placed successfully!');
                 } else {
                     showToast('Failed to save order.');
@@ -329,7 +341,7 @@
             if (currentUser) {
                 document.getElementById('userModalTitle').innerText = `👤 ${currentUser.name}`;
                 body.innerHTML = `
-                    <p><strong>Email:</strong> ${currentUser.email}</p>
+                    <p><strong>Phone:</strong> ${currentUser.phone}</p>
                     <p><strong>Role:</strong> ${currentUser.role.toUpperCase()}</p>
                     <button class="btn-danger" onclick="logoutUser()" style="width:100%;margin-top:1rem;">Logout</button>
                 `;
@@ -351,7 +363,7 @@
             document.getElementById('loginBtn').style.background = '#8B0000';
             document.getElementById('regBtn').style.background = '#ccc';
             document.getElementById('authForm').innerHTML = `
-                <input type="email" id="loginEmail" placeholder="Email" style="width:100%;padding:0.75rem;margin-bottom:0.5rem;border:1px solid #ddd;border-radius:8px;">
+                <input type="text" id="loginPhone" placeholder="Phone Number (e.g. 0720470412)" style="width:100%;padding:0.75rem;margin-bottom:0.5rem;border:1px solid #ddd;border-radius:8px;">
                 <input type="password" id="loginPassword" placeholder="Password" style="width:100%;padding:0.75rem;margin-bottom:0.5rem;border:1px solid #ddd;border-radius:8px;">
                 <button class="btn-primary" onclick="loginUser()">Login</button>
             `;
@@ -362,19 +374,19 @@
             document.getElementById('regBtn').style.background = '#8B0000';
             document.getElementById('authForm').innerHTML = `
                 <input type="text" id="regName" placeholder="Full Name" style="width:100%;padding:0.75rem;margin-bottom:0.5rem;border:1px solid #ddd;border-radius:8px;">
-                <input type="email" id="regEmail" placeholder="Email" style="width:100%;padding:0.75rem;margin-bottom:0.5rem;border:1px solid #ddd;border-radius:8px;">
+                <input type="text" id="regPhone" placeholder="Phone Number" style="width:100%;padding:0.75rem;margin-bottom:0.5rem;border:1px solid #ddd;border-radius:8px;">
                 <input type="password" id="regPassword" placeholder="Password" style="width:100%;padding:0.75rem;margin-bottom:0.5rem;border:1px solid #ddd;border-radius:8px;">
                 <button class="btn-primary" onclick="registerUser()">Create Account</button>
             `;
         }
 
         async function loginUser() {
-            const email = document.getElementById('loginEmail').value;
+            const phone = document.getElementById('loginPhone').value;
             const password = document.getElementById('loginPassword').value;
             try {
                 const res = await fetch(`${API_URL}/api/login`, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
+                    body: JSON.stringify({ phone, password })
                 });
                 const data = await res.json();
                 if (data.success) {
@@ -382,7 +394,7 @@
                     localStorage.setItem('chutzpah_user', JSON.stringify(data.user));
                     currentUser = data.user;
                     updateUserUI();
-                    closeUserModal();
+                    closeModal('userModal');
                     showToast(`Welcome ${data.user.name}`);
                 } else {
                     showToast(data.message || 'Login failed');
@@ -392,18 +404,18 @@
 
         async function registerUser() {
             const name = document.getElementById('regName').value;
-            const email = document.getElementById('regEmail').value;
+            const phone = document.getElementById('regPhone').value;
             const password = document.getElementById('regPassword').value;
             try {
                 const res = await fetch(`${API_URL}/api/register`, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, email, password })
+                    body: JSON.stringify({ name, phone, password })
                 });
                 if (res.ok) {
                     showToast('Account created! Please login.');
                     showLogin();
                 } else {
-                    showToast('Registration failed. Email might exist.');
+                    showToast('Registration failed. Phone might exist.');
                 }
             } catch (err) { showToast('Backend error'); }
         }
@@ -413,7 +425,7 @@
             localStorage.removeItem('chutzpah_user');
             currentUser = null;
             updateUserUI();
-            closeUserModal();
+            closeModal('userModal');
         }
 
         function updateUserUI() {
@@ -430,9 +442,7 @@
             }
         }
 
-        function closeUserModal() { document.getElementById('userModal').classList.remove('active'); }
-
-        // --- ADMIN DASHBOARD (Restored with Tabs) ---
+        // --- ADMIN DASHBOARD ---
         function openAdminDashboard() {
             if (!currentUser || currentUser.role !== 'admin') return showToast('Access Denied');
             
@@ -538,7 +548,7 @@
                 if (res.ok) {
                     showToast('Price updated!');
                     await fetchProducts();
-                    switchAdminTab('products', document.querySelector('.admin-tab')); // Refresh tab
+                    switchAdminTab('products', document.querySelector('.admin-tab')); 
                 } else {
                     showToast('Failed to update price.');
                 }
@@ -560,9 +570,7 @@
             } catch (err) { showToast('Error updating product'); }
         }
 
-        function closeAdminModal() { document.getElementById('adminModal').classList.remove('active'); }
-
-        // --- UTILS ---
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
         function showToast(msg) {
             const toast = document.createElement('div');
             toast.className = 'toast';
