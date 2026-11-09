@@ -26,26 +26,29 @@
         .business-info span { display: flex; align-items: center; gap: 0.5rem; color: #555; font-size: 0.85rem; }
         .business-motto { color: #8B0000; font-weight: bold; font-style: italic; }
         
-        /* Category Selector */
+        /* Navigation & Breadcrumbs */
+        .breadcrumb { font-size: 0.9rem; color: #666; margin-bottom: 1rem; display: flex; gap: 0.5rem; align-items: center; }
+        .breadcrumb span { cursor: pointer; color: #8B0000; font-weight: bold; }
+        .breadcrumb span:hover { text-decoration: underline; }
+        
         .category-selector { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
-        .category-btn { flex: 1; padding: 1rem; background: white; border: 2px solid #ddd; border-radius: 12px; cursor: pointer; transition: all 0.3s; text-align: center; }
-        .category-btn.active { border-color: #8B0000; background: linear-gradient(135deg, #fff5f5, #ffebeb); box-shadow: 0 4px 12px rgba(139,0,0,0.2); }
-        .category-btn h3 { font-size: 1.1rem; margin-bottom: 0.25rem; }
+        .category-btn { flex: 1; padding: 1rem; background: white; border: 2px solid #ddd; border-radius: 12px; cursor: pointer; transition: all 0.3s; text-align: center; min-width: 200px; }
+        .category-btn:hover { border-color: #8B0000; box-shadow: 0 4px 12px rgba(139,0,0,0.1); transform: translateY(-3px); }
+        .category-btn h3 { font-size: 1.1rem; color: #333; }
         
         /* Products */
         .products-section { background: white; border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .section-title { font-size: 1.3rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #8B0000; color: #8B0000; }
         .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
-        .product-card { border: 1px solid #eee; border-radius: 12px; padding: 1rem; transition: transform 0.2s, box-shadow 0.2s; background: white; }
+        .product-card { border: 1px solid #eee; border-radius: 12px; padding: 1rem; transition: transform 0.2s; background: white; display: flex; flex-direction: column; }
         .product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
         .product-img { width: 100%; height: 180px; background: #f9f9f9; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; overflow: hidden; }
         .product-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
-        .product-img-placeholder { width: 100%; height: 100%; background: linear-gradient(135deg, #f0f0f0, #e0e0e0); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: #999; flex-direction: column; }
-        .product-name { font-weight: bold; font-size: 1rem; margin-bottom: 0.25rem; }
+        .product-img-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: #999; }
+        .product-name { font-weight: bold; font-size: 1rem; margin-bottom: 0.25rem; flex-grow: 1; }
         .product-category { font-size: 0.7rem; color: #8B0000; font-weight: bold; margin-bottom: 0.5rem; }
         .product-price { font-size: 1.1rem; font-weight: bold; color: #1e3c2c; margin-bottom: 0.5rem; }
-        .add-to-cart { width: 100%; padding: 0.6rem; background: #8B0000; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: background 0.2s; }
-        .add-to-cart:hover { background: #5a0000; }
+        .add-to-cart { width: 100%; padding: 0.6rem; background: #8B0000; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
         
         /* Footer */
         .footer { background: #1a1a2e; color: white; padding: 2rem; margin-top: 2rem; }
@@ -54,30 +57,26 @@
         .footer-section p { margin-bottom: 0.5rem; font-size: 0.85rem; opacity: 0.8; }
         .copyright { text-align: center; padding-top: 2rem; margin-top: 2rem; border-top: 1px solid #333; font-size: 0.8rem; opacity: 0.7; }
         
-        /* Modals & Forms */
+        /* Modals */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
         .modal.active { display: flex; }
-        .modal-content { background: white; width: 90%; max-width: 550px; max-height: 85vh; border-radius: 16px; overflow: hidden; animation: slideUp 0.3s ease; }
+        .modal-content { background: white; width: 90%; max-width: 550px; max-height: 85vh; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; }
         .modal-content.large { max-width: 800px; }
-        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .modal-header { background: #8B0000; color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; }
-        .modal-body { padding: 1rem; max-height: 60vh; overflow-y: auto; }
-        .form-group input, .form-group select { width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; margin-bottom: 0.5rem; }
-        .btn-primary { background: #8B0000; color: white; border: none; padding: 0.75rem; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; }
+        .modal-body { padding: 1rem; overflow-y: auto; flex-grow: 1; }
+        .btn-primary { background: #8B0000; color: white; border: none; padding: 0.75rem; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 0.5rem;}
         .btn-danger { background: #ff4444; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; }
         
-        /* Cart */
+        /* Cart & Toast */
         .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; border-bottom: 1px solid #eee; }
-        .cart-item-info { flex: 1; }
-        .cart-item-name { font-weight: bold; }
         .cart-item-price { font-weight: bold; color: #8B0000; }
         .cart-item-remove { background: #ff4444; color: white; border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; margin-left: 0.5rem; }
         .cart-total { padding: 1rem; background: #f5f5f5; font-weight: bold; font-size: 1.2rem; text-align: right; }
         .toast { position: fixed; bottom: 20px; right: 20px; background: #8B0000; color: white; padding: 0.75rem 1.25rem; border-radius: 8px; z-index: 1100; animation: slideIn 0.3s ease; }
-        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
         
-        /* Admin Tabs */
-        .admin-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
+        /* Admin */
+        .admin-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
         .admin-tab { padding: 0.5rem 1rem; cursor: pointer; background: #f0f0f0; border: none; border-radius: 8px; font-weight: bold; }
         .admin-tab.active { background: #8B0000; color: white; }
         
@@ -110,28 +109,16 @@
             <div class="business-motto">💪 "Guts, Audacity, Willingness to fly in the face of opposition"</div>
         </div>
 
-        <div class="category-selector" id="categorySelector">
-            <div class="category-btn active" data-category="Badges" onclick="filterCategory('Badges')">
-                <h3>📛 Badges & Pins</h3>
-            </div>
-            <div class="category-btn" data-category="Patches" onclick="filterCategory('Patches')">
-                <h3>🪢 Embroidered Patches</h3>
-            </div>
-            <div class="category-btn" data-category="Branding" onclick="filterCategory('Branding')">
-                <h3>🎨 Branding Services</h3>
-            </div>
-            <div class="category-btn" data-category="Accessories" onclick="filterCategory('Accessories')">
-                <h3>🧤 Accessories</h3>
-            </div>
-        </div>
+        <!-- Breadcrumbs -->
+        <div class="breadcrumb" id="breadcrumb"></div>
 
-        <div class="products-section">
-            <div class="section-title">
-                <span id="productsTitle">📛 Badges & Pins</span>
-            </div>
-            <div class="product-grid" id="productGrid">
-                <p style="text-align:center; width:100%;">Loading products from database...</p>
-            </div>
+        <!-- Navigation Buttons -->
+        <div class="category-selector" id="categorySelector"></div>
+
+        <!-- Products -->
+        <div class="products-section" id="productsSection" style="display: none;">
+            <div class="section-title" id="productsTitle"></div>
+            <div class="product-grid" id="productGrid"></div>
         </div>
     </div>
 
@@ -162,45 +149,26 @@
     </div>
 
     <!-- Modals -->
-    <div class="modal" id="userModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="userModalTitle">👤 My Account</h3>
-                <button onclick="closeModal('userModal')" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">&times;</button>
-            </div>
-            <div class="modal-body" id="userModalBody"></div>
-        </div>
-    </div>
-
-    <div class="modal" id="adminModal">
-        <div class="modal-content large">
-            <div class="modal-header">
-                <h3>🔧 Admin Dashboard</h3>
-                <button onclick="closeModal('adminModal')" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">&times;</button>
-            </div>
-            <div class="modal-body" id="adminModalBody"></div>
-        </div>
-    </div>
-
-    <div class="modal" id="cartModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>🛒 Your Cart</h3>
-                <button onclick="closeModal('cartModal')" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">&times;</button>
-            </div>
-            <div class="modal-body" id="cartItemsContainer"></div>
-            <div class="cart-total" id="cartTotal">Total: KES 0</div>
-            <div style="padding:1rem;border-top:1px solid #eee;">
-                <label>📱 M-Pesa Number:</label>
-                <input type="tel" id="phoneNumber" style="width:100%;padding:0.75rem;border:1px solid #ddd;border-radius:8px;margin:0.5rem 0;" placeholder="254712345678">
-                <button id="payBtn" onclick="processCheckout()" style="width:100%;padding:0.75rem;background:#4CAF50;color:white;border:none;border-radius:8px;font-weight:bold;">💳 Pay & Place Order</button>
-            </div>
-        </div>
-    </div>
+    <div class="modal" id="userModal"><div class="modal-content"><div class="modal-header"><h3 id="userModalTitle">👤 My Account</h3><button onclick="closeModal('userModal')" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">&times;</button></div><div class="modal-body" id="userModalBody"></div></div></div>
+    
+    <div class="modal" id="adminModal"><div class="modal-content large"><div class="modal-header"><h3>🔧 Admin Dashboard</h3><button onclick="closeModal('adminModal')" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">&times;</button></div><div class="modal-body" id="adminModalBody"></div></div></div>
+    
+    <div class="modal" id="cartModal"><div class="modal-content"><div class="modal-header"><h3>🛒 Your Cart</h3><button onclick="closeModal('cartModal')" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">&times;</button></div><div class="modal-body" id="cartItemsContainer"></div><div class="cart-total" id="cartTotal">Total: KES 0</div><div style="padding:1rem;border-top:1px solid #eee;"><label>📱 M-Pesa Number:</label><input type="tel" id="phoneNumber" style="width:100%;padding:0.75rem;border:1px solid #ddd;border-radius:8px;margin:0.5rem 0;" placeholder="254712345678"><button id="payBtn" onclick="processCheckout()" style="width:100%;padding:0.75rem;background:#4CAF50;color:white;border:none;border-radius:8px;font-weight:bold;">💳 Pay & Place Order</button></div></div></div>
 
     <script>
         const API_URL = 'https://chutzpah-final.onrender.com';
-        let products = [], cart = [], currentUser = null, userToken = localStorage.getItem('chutzpah_token') || null, currentCategory = 'Badges';
+
+        // EXACT MATCH TO YOUR FOLDERS
+        const catalogStructure = {
+            'Pathfinders': ['Patches & Insignia', 'Pathfinder Honor Sash', 'pins & awards'],
+            'Adventurer': [], 
+            'MasterGuide': [], 
+            'Accesories': ['ADVENTIST YOUTH MINISTRIES', 'Ambassador']
+        };
+
+        let currentCategory = null, currentSubCategory = null;
+        let products = [], cart = [];
+        let currentUser = null, userToken = localStorage.getItem('chutzpah_token') || null;
 
         async function init() {
             loadCart();
@@ -208,45 +176,81 @@
                 currentUser = JSON.parse(localStorage.getItem('chutzpah_user'));
                 updateUserUI();
             }
-            await fetchProducts();
+            loadCategory(null);
         }
 
-        async function fetchProducts() {
-            try {
-                const res = await fetch(`${API_URL}/api/products`);
-                products = await res.json();
-                renderProducts();
-            } catch (err) {
-                document.getElementById('productGrid').innerHTML = '<p style="color:red;text-align:center;width:100%;">Failed to load products. Backend might be waking up.</p>';
+        // --- NAVIGATION ---
+        function loadCategory(category, subCategory = null) {
+            currentCategory = category;
+            currentSubCategory = subCategory;
+
+            let bc = `<span onclick="loadCategory(null)">Home</span>`;
+            if (category) bc += ` > <span onclick="loadCategory('${category}')">${category}</span>`;
+            if (subCategory) bc += ` > <span>${subCategory}</span>`;
+            document.getElementById('breadcrumb').innerHTML = bc;
+
+            if (!category) {
+                document.getElementById('productsSection').style.display = 'none';
+                renderMainButtons();
+            } else if (category && !subCategory && catalogStructure[category] && catalogStructure[category].length > 0) {
+                document.getElementById('productsSection').style.display = 'none';
+                renderSubButtons(category);
+            } else {
+                document.getElementById('productsSection').style.display = 'block';
+                document.getElementById('categorySelector').style.display = 'none';
+                document.getElementById('productsTitle').innerText = `${subCategory || category}`;
+                fetchProducts();
             }
         }
 
-        function filterCategory(category) {
-            currentCategory = category;
-            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelector(`.category-btn[data-category="${category}"]`).classList.add('active');
-            document.getElementById('productsTitle').innerText = category === 'Badges' ? '📛 Badges & Pins' : category === 'Patches' ? '🪢 Patches' : category === 'Branding' ? '🎨 Branding' : '🧤 Accessories';
-            renderProducts();
+        function renderMainButtons() {
+            const container = document.getElementById('categorySelector');
+            container.style.display = 'flex';
+            container.innerHTML = Object.keys(catalogStructure).map(cat => `
+                <div class="category-btn" onclick="loadCategory('${cat}')">
+                    <h3>📁 ${cat}</h3>
+                </div>
+            `).join('');
+        }
+
+        function renderSubButtons(category) {
+            const container = document.getElementById('categorySelector');
+            container.style.display = 'flex';
+            container.innerHTML = catalogStructure[category].map(sub => `
+                <div class="category-btn" onclick="loadCategory('${category}', '${sub}')">
+                    <h3>🔖 ${sub}</h3>
+                </div>
+            `).join('');
+        }
+
+        // --- FETCH PRODUCTS ---
+        async function fetchProducts() {
+            try {
+                let url = `${API_URL}/api/products?category=${currentCategory}`;
+                if (currentSubCategory) url += `&sub_category=${currentSubCategory}`;
+                
+                const res = await fetch(url);
+                products = await res.json();
+                renderProducts();
+            } catch (err) {
+                document.getElementById('productGrid').innerHTML = '<p style="color:red;">Failed to load products. Backend might be waking up.</p>';
+            }
         }
 
         function renderProducts() {
             const grid = document.getElementById('productGrid');
-            const filtered = products.filter(p => p.category === currentCategory);
-            
-            if (filtered.length === 0) {
-                grid.innerHTML = '<p style="text-align:center;width:100%;">No products in this category yet.</p>';
+            if (products.length === 0) {
+                grid.innerHTML = '<p style="text-align:center;width:100%;">No products here yet.</p>';
                 return;
             }
-
-            grid.innerHTML = filtered.map(p => `
+            grid.innerHTML = products.map(p => `
                 <div class="product-card">
                     <div class="product-img">
-                        ${p.image_url ? `<img src="${p.image_url}" alt="${p.name}">` : `<div class="product-img-placeholder">📦</div>`}
+                        ${p.image_url ? `<img src="${p.image_url}">` : `<div class="product-img-placeholder">📦</div>`}
                     </div>
                     <div class="product-name">${p.name}</div>
-                    <div class="product-category">${p.category}</div>
                     <div class="product-price">KES ${parseFloat(p.price).toLocaleString()}</div>
-                    <button class="add-to-cart" onclick="addToCart(${p.id}, '${p.name}', ${p.price})">🛒 Add to Cart</button>
+                    <button class="add-to-cart" onclick="addToCart(${p.id}, '${p.name}', ${p.price})">Add to Cart</button>
                 </div>
             `).join('');
         }
@@ -260,7 +264,7 @@
             cart.push({ id, name, price });
             localStorage.setItem('chutzpah_cart', JSON.stringify(cart));
             updateCartUI();
-            showToast(`✅ Added ${name} to cart`);
+            showToast(`Added ${name} to cart`);
         }
         function removeFromCart(index) {
             cart.splice(index, 1);
@@ -287,9 +291,7 @@
                 total += item.price;
                 return `
                     <div class="cart-item">
-                        <div class="cart-item-info">
-                            <div class="cart-item-name">${item.name}</div>
-                        </div>
+                        <div class="cart-item-info"><div class="cart-item-name">${item.name}</div></div>
                         <div class="cart-item-price">KES ${item.price.toLocaleString()}</div>
                         <button class="cart-item-remove" onclick="removeFromCart(${i})">×</button>
                     </div>
@@ -323,7 +325,7 @@
                     localStorage.setItem('chutzpah_cart', JSON.stringify(cart));
                     updateCartUI();
                     closeModal('cartModal');
-                    showToast('✅ Order placed successfully!');
+                    showToast('Order placed successfully!');
                 } else {
                     showToast('Failed to save order.');
                 }
@@ -363,7 +365,7 @@
             document.getElementById('loginBtn').style.background = '#8B0000';
             document.getElementById('regBtn').style.background = '#ccc';
             document.getElementById('authForm').innerHTML = `
-                <input type="text" id="loginPhone" placeholder="Phone Number (e.g. 0720470412)" style="width:100%;padding:0.75rem;margin-bottom:0.5rem;border:1px solid #ddd;border-radius:8px;">
+                <input type="text" id="loginPhone" placeholder="Phone Number" style="width:100%;padding:0.75rem;margin-bottom:0.5rem;border:1px solid #ddd;border-radius:8px;">
                 <input type="password" id="loginPassword" placeholder="Password" style="width:100%;padding:0.75rem;margin-bottom:0.5rem;border:1px solid #ddd;border-radius:8px;">
                 <button class="btn-primary" onclick="loginUser()">Login</button>
             `;
@@ -449,10 +451,8 @@
             const body = document.getElementById('adminModalBody');
             body.innerHTML = `
                 <div class="admin-tabs">
-                    <button class="admin-tab active" onclick="switchAdminTab('products', this)">📦 Manage Products</button>
-                    <button class="admin-tab" onclick="switchAdminTab('orders', this)">📋 Recent Orders</button>
-                    <button class="admin-tab" onclick="switchAdminTab('tenders', this)">📝 Tender Requests</button>
-                    <button class="admin-tab" onclick="switchAdminTab('reports', this)">📊 Sales Report</button>
+                    <button class="admin-tab active" onclick="switchAdminTab('products', this)">➕ Add & Manage</button>
+                    <button class="admin-tab" onclick="switchAdminTab('orders', this)">📋 Orders</button>
                 </div>
                 <div id="adminContent"></div>
             `;
@@ -467,14 +467,45 @@
             const content = document.getElementById('adminContent');
             
             if (tabName === 'products') {
-                content.innerHTML = renderAdminProductsHTML();
+                const catOptions = Object.keys(catalogStructure).map(c => `<option value="${c}">${c}</option>`).join('');
+                
+                content.innerHTML = `
+                    <div style="background:#f9f9f9; padding:1rem; border-radius:8px; margin-bottom:1rem;">
+                        <h4>Add Product</h4>
+                        <input type="text" id="pName" placeholder="Product Name" style="width:100%;margin-bottom:0.5rem;padding:0.5rem;">
+                        <input type="number" id="pPrice" placeholder="Price (KES)" style="width:100%;margin-bottom:0.5rem;padding:0.5rem;">
+                        
+                        <label>Category</label>
+                        <select id="pCat" onchange="updateSubCats()" style="width:100%;margin-bottom:0.5rem;padding:0.5rem;">
+                            <option value="">-- Select Category --</option>
+                            ${catOptions}
+                        </select>
+                        
+                        <label>Sub Category</label>
+                        <select id="pSubCat" style="width:100%;margin-bottom:0.5rem;padding:0.5rem;">
+                            <option value="">-- Select Category First --</option>
+                        </select>
+    
+                        <label>Image Path (e.g., images/Adventurer/Chickens Award.png)</label>
+                        <input type="text" id="pImage" placeholder="images/..." style="width:100%;margin-bottom:0.5rem;padding:0.5rem;">
+                        
+                        <button onclick="addProduct()" class="btn-primary">Add Product</button>
+                    </div>
+                    <hr style="margin-bottom:1rem;">
+                    ${renderAdminProductsHTML()}
+                `;
             } else if (tabName === 'orders') {
                 content.innerHTML = renderAdminOrdersHTML();
-            } else if (tabName === 'tenders') {
-                content.innerHTML = renderAdminTendersHTML();
-            } else if (tabName === 'reports') {
-                content.innerHTML = renderAdminReportsHTML();
             }
+        }
+
+        function updateSubCats() {
+            const cat = document.getElementById('pCat').value;
+            const subSelect = document.getElementById('pSubCat');
+            if (!cat || catalogStructure[cat].length === 0) {
+                return subSelect.innerHTML = '<option value="">No Sub Categories</option>';
+            }
+            subSelect.innerHTML = catalogStructure[cat].map(sub => `<option value="${sub}">${sub}</option>`).join('');
         }
 
         function renderAdminProductsHTML() {
@@ -487,7 +518,7 @@
                         <span style="font-size:0.7rem; color:${p.is_hidden ? 'red' : 'green'}">${p.is_hidden ? 'Hidden' : 'Visible'}</span>
                     </div>
                     <div style="display:flex; gap:0.5rem;">
-                        <button onclick="editPrice(${p.id}, ${p.price})" style="background:#4CAF50;color:white;border:none;padding:0.25rem 0.5rem;border-radius:4px;cursor:pointer;">✏️ Edit Price</button>
+                        <button onclick="editPrice(${p.id}, ${p.price})" style="background:#4CAF50;color:white;border:none;padding:0.25rem 0.5rem;border-radius:4px;cursor:pointer;">✏️ Price</button>
                         <button onclick="toggleProduct(${p.id}, ${p.is_hidden})" style="background:#ff9800;color:white;border:none;padding:0.25rem 0.5rem;border-radius:4px;cursor:pointer;">
                             ${p.is_hidden ? 'Show' : 'Hide'}
                         </button>
@@ -508,31 +539,32 @@
             `).join('');
         }
 
-        function renderAdminTendersHTML() {
-            const tenders = JSON.parse(localStorage.getItem('chutzpah_tenders') || '[]');
-            if (tenders.length === 0) return '<p>No tender requests yet.</p>';
-            return tenders.map(t => `
-                <div style="border:1px solid #eee; padding:0.75rem; margin-bottom:0.5rem; border-radius:8px;">
-                    <strong>${t.id}</strong> - ${t.date}<br>
-                    Organization: ${t.org}<br>
-                    Item: ${t.item}<br>
-                    Contact: ${t.name} (${t.email}, ${t.phone})<br>
-                </div>
-            `).join('');
-        }
+        async function addProduct() {
+            const name = document.getElementById('pName').value;
+            const price = document.getElementById('pPrice').value;
+            const category = document.getElementById('pCat').value;
+            const sub_category = document.getElementById('pSubCat').value;
+            const image_url = document.getElementById('pImage').value;
 
-        function renderAdminReportsHTML() {
-            const localOrders = JSON.parse(localStorage.getItem('chutzpah_orders') || '[]');
-            const totalRevenue = localOrders.reduce((sum, o) => sum + o.total, 0);
-            return `
-                <div style="background:#f5f5f5; padding:1rem; border-radius:12px; text-align:center;">
-                    <h2 style="color:#8B0000;">KES ${totalRevenue.toLocaleString()}</h2>
-                    <p>Total Revenue</p>
-                </div>
-                <div style="margin-top:1rem; text-align:center;">
-                    <p><strong>Total Orders:</strong> ${localOrders.length}</p>
-                </div>
-            `;
+            if (!name || !price || !category) return showToast('Fill all required fields');
+
+            try {
+                const res = await fetch(`${API_URL}/api/products`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': userToken },
+                    body: JSON.stringify({ name, price, category, sub_category, image_url })
+                });
+                if (res.ok) {
+                    showToast('Product added successfully!');
+                    document.getElementById('pName').value = '';
+                    document.getElementById('pPrice').value = '';
+                    document.getElementById('pImage').value = '';
+                    fetchProducts();
+                    switchAdminTab('products', document.querySelector('.admin-tab'));
+                } else {
+                    showToast('Failed to add product.');
+                }
+            } catch (err) { showToast('Error adding product'); }
         }
 
         async function editPrice(id, currentPrice) {
