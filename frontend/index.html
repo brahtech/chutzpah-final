@@ -3,84 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chutzpah Enterprises | Branding & General Trade | Eldoret, Kenya</title>
+    <title>Chutzpah Enterprises | Branding & General Trade</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%); min-height: 100vh; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; min-height: 100vh; display: flex; flex-direction: column; }
         
-        /* Header */
-        .header { background: linear-gradient(135deg, #8B0000 0%, #A52A2A 100%); color: white; padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .header-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-        .logo h1 { font-size: 1.8rem; letter-spacing: 2px; }
-        .logo p { font-size: 0.8rem; opacity: 0.9; font-style: italic; }
-        .tagline { font-size: 0.7rem; margin-top: 0.25rem; color: #FFD700; }
-        .header-right { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
-        .cart-icon, .user-icon, .admin-icon, .contact-icon { position: relative; cursor: pointer; background: rgba(255,255,255,0.2); padding: 0.75rem 1.25rem; border-radius: 50px; transition: all 0.3s; }
+        /* Header - Jumia Style */
+        .header { background: linear-gradient(135deg, #8B0000 0%, #A52A2A 100%); color: white; padding: 0.6rem 1rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .header-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+        .logo h1 { font-size: 1.2rem; letter-spacing: 1px; }
+        .logo p { display: none; }
+        .header-right { display: flex; gap: 0.4rem; align-items: center; }
+        .cart-icon, .user-icon, .admin-icon, .contact-icon { position: relative; cursor: pointer; background: rgba(255,255,255,0.2); padding: 0.4rem 0.8rem; border-radius: 50px; font-size: 0.75rem; font-weight: bold; transition: background 0.3s; }
         .cart-icon:hover, .user-icon:hover, .admin-icon:hover, .contact-icon:hover { background: rgba(255,255,255,0.3); }
-        .cart-count { position: absolute; top: -8px; right: -8px; background: #ff6b35; color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: bold; }
-        
-        /* Main */
-        .container { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
-        .business-banner { background: white; border-radius: 16px; padding: 1rem 1.5rem; margin-bottom: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-        .business-info { display: flex; gap: 2rem; flex-wrap: wrap; }
-        .business-info span { display: flex; align-items: center; gap: 0.5rem; color: #555; font-size: 0.85rem; }
-        .business-motto { color: #8B0000; font-weight: bold; font-style: italic; }
+        .cart-count { position: absolute; top: -5px; right: -5px; background: #f68b1e; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: bold; }
         
         /* Navigation & Breadcrumbs */
-        .breadcrumb { font-size: 0.9rem; color: #666; margin-bottom: 1rem; display: flex; gap: 0.5rem; align-items: center; }
+        .container { max-width: 1400px; margin: 1rem auto; padding: 0 1rem; flex-grow: 1; width: 100%; }
+        .breadcrumb { font-size: 0.8rem; color: #666; margin-bottom: 1rem; display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
         .breadcrumb span { cursor: pointer; color: #8B0000; font-weight: bold; }
         .breadcrumb span:hover { text-decoration: underline; }
         
-        .category-selector { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
-        .category-btn { flex: 1; padding: 1rem; background: white; border: 2px solid #ddd; border-radius: 12px; cursor: pointer; transition: all 0.3s; text-align: center; min-width: 200px; }
-        .category-btn:hover { border-color: #8B0000; box-shadow: 0 4px 12px rgba(139,0,0,0.1); transform: translateY(-3px); }
-        .category-btn h3 { font-size: 1.1rem; color: #333; }
+        .category-selector { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .category-btn { flex: 1; padding: 0.8rem 0.5rem; background: white; border: 1px solid #eee; border-radius: 8px; cursor: pointer; transition: all 0.3s; text-align: center; min-width: 100px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+        .category-btn:hover { border-color: #8B0000; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transform: translateY(-2px); }
+        .category-btn h3 { font-size: 0.8rem; color: #333; word-wrap: break-word; }
         
-        /* Products */
-        .products-section { background: white; border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .section-title { font-size: 1.3rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #8B0000; color: #8B0000; }
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
-        .product-card { border: 1px solid #eee; border-radius: 12px; padding: 1rem; transition: transform 0.2s; background: white; display: flex; flex-direction: column; }
-        .product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
-        .product-img { width: 100%; height: 180px; background: #f9f9f9; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; overflow: hidden; }
+        /* Products - Jumia Style Grid */
+        .products-section { background: transparent; margin-bottom: 2rem; }
+        .section-title { font-size: 1.1rem; margin-bottom: 1rem; color: #333; font-weight: bold; }
+        .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+        .product-card { background: white; border-radius: 8px; padding: 0.5rem; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; box-shadow: 0 1px 4px rgba(0,0,0,0.05); cursor: pointer; position: relative; }
+        .product-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .product-img { width: 100%; height: 140px; background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; overflow: hidden; padding: 0.5rem;}
         .product-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
-        .product-img-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: #999; }
-        .product-name { font-weight: bold; font-size: 1rem; margin-bottom: 0.25rem; flex-grow: 1; }
-        .product-category { font-size: 0.7rem; color: #8B0000; font-weight: bold; margin-bottom: 0.5rem; }
-        .product-price { font-size: 1.1rem; font-weight: bold; color: #1e3c2c; margin-bottom: 0.5rem; }
-        .add-to-cart { width: 100%; padding: 0.6rem; background: #8B0000; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        
-        /* Footer */
-        .footer { background: #1a1a2e; color: white; padding: 2rem; margin-top: 2rem; }
-        .footer-content { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
-        .footer-section h4 { margin-bottom: 1rem; color: #ffcc00; }
-        .footer-section p { margin-bottom: 0.5rem; font-size: 0.85rem; opacity: 0.8; }
-        .copyright { text-align: center; padding-top: 2rem; margin-top: 2rem; border-top: 1px solid #333; font-size: 0.8rem; opacity: 0.7; }
+        .product-img-placeholder { font-size: 2rem; color: #ccc; }
+        .product-name { font-size: 0.8rem; color: #333; margin-bottom: 0.2rem; flex-grow: 1; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .product-price { font-size: 1rem; font-weight: bold; color: #000; margin-bottom: 0.4rem; }
+        .add-to-cart { width: 100%; padding: 0.5rem; background: #f68b1e; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.75rem; }
+        .add-to-cart:hover { background: #e07b17; }
         
         /* Modals */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; }
         .modal.active { display: flex; }
-        .modal-content { background: white; width: 90%; max-width: 550px; max-height: 85vh; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; }
+        .modal-content { background: white; width: 95%; max-width: 500px; max-height: 90vh; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
         .modal-content.large { max-width: 800px; }
-        .modal-header { background: #8B0000; color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; }
+        .modal-header { background: #8B0000; color: white; padding: 0.8rem; display: flex; justify-content: space-between; align-items: center; }
         .modal-body { padding: 1rem; overflow-y: auto; flex-grow: 1; }
-        .btn-primary { background: #8B0000; color: white; border: none; padding: 0.75rem; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 0.5rem;}
-        .btn-danger { background: #ff4444; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; }
+        .btn-primary { background: #8B0000; color: white; border: none; padding: 0.6rem; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 0.5rem; font-size: 0.9rem;}
+        .btn-danger { background: #ff4444; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; }
         
-        /* Cart & Toast */
-        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; border-bottom: 1px solid #eee; }
+        /* Admin Dashboard */
+        .admin-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
+        .admin-tab { padding: 0.4rem 0.8rem; cursor: pointer; background: #f0f0f0; border: none; border-radius: 6px; font-weight: bold; font-size: 0.8rem; }
+        .admin-tab.active { background: #8B0000; color: white; }
+        .admin-form input, .admin-form select { width: 100%; padding: 0.6rem; margin-bottom: 0.5rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem; }
+        
+        /* Cart */
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid #eee; font-size: 0.9rem;}
         .cart-item-price { font-weight: bold; color: #8B0000; }
-        .cart-item-remove { background: #ff4444; color: white; border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; margin-left: 0.5rem; }
-        .cart-total { padding: 1rem; background: #f5f5f5; font-weight: bold; font-size: 1.2rem; text-align: right; }
-        .toast { position: fixed; bottom: 20px; right: 20px; background: #8B0000; color: white; padding: 0.75rem 1.25rem; border-radius: 8px; z-index: 1100; animation: slideIn 0.3s ease; }
+        .cart-item-remove { background: #ff4444; color: white; border: none; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; }
+        .cart-total { padding: 1rem; background: #f5f5f5; font-weight: bold; font-size: 1rem; text-align: right; }
+        .toast { position: fixed; bottom: 20px; right: 20px; background: #f68b1e; color: white; padding: 0.6rem 1rem; border-radius: 6px; z-index: 1100; font-size: 0.9rem; font-weight: bold; animation: slideIn 0.3s ease; }
         @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
         
-        /* Admin */
-        .admin-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
-        .admin-tab { padding: 0.5rem 1rem; cursor: pointer; background: #f0f0f0; border: none; border-radius: 8px; font-weight: bold; }
-        .admin-tab.active { background: #8B0000; color: white; }
+        /* Footer */
+        .footer { background: #1a1a2e; color: white; padding: 1.5rem 1rem; margin-top: auto; }
+        .footer-content { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; }
+        .footer-section h4 { margin-bottom: 0.5rem; color: #ffcc00; font-size: 0.9rem; }
+        .footer-section p { margin-bottom: 0.3rem; font-size: 0.75rem; opacity: 0.8; }
+        .copyright { text-align: center; padding-top: 1rem; margin-top: 1rem; border-top: 1px solid #333; font-size: 0.7rem; opacity: 0.7; }
         
-        @media (max-width: 768px) { .container { padding: 0 1rem; } .product-grid { grid-template-columns: 1fr; } .header-content { flex-direction: column; } }
+        /* Desktop Overrides */
+        @media (min-width: 768px) {
+            .header { padding: 1rem 2rem; }
+            .logo h1 { font-size: 1.8rem; }
+            .logo p { display: block; font-size: 0.8rem; opacity: 0.9; font-style: italic; }
+            .cart-icon, .user-icon, .admin-icon, .contact-icon { padding: 0.75rem 1.25rem; font-size: 1rem; }
+            .category-btn { padding: 1rem; min-width: 200px; }
+            .category-btn h3 { font-size: 1.1rem; }
+            .product-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+            .product-img { height: 200px; }
+            .product-name { font-size: 0.9rem; }
+            .product-price { font-size: 1.2rem; }
+            .add-to-cart { padding: 0.6rem; font-size: 0.9rem; }
+        }
     </style>
 </head>
 <body>
@@ -89,7 +96,6 @@
             <div class="logo">
                 <h1>🛡️ CHUTZPAH ENTERPRISES</h1>
                 <p>Branding & General Trade</p>
-                <div class="tagline">"Guts, Audacity, Willingness to fly in the face of opposition"</div>
             </div>
             <div class="header-right">
                 <div class="contact-icon" onclick="showToast('Call us: +254 720 470412')">📞 Contact</div>
@@ -101,28 +107,14 @@
     </div>
 
     <div class="container">
-        <div class="business-banner">
-            <div class="business-info">
-                <span>📍 Johannesburg Plaza, 2nd fl. Rm 7, Eldoret</span>
-                <span>📞 +254 720 470412 | +254 733 437235</span>
-            </div>
-            <div class="business-motto">💪 "Guts, Audacity, Willingness to fly in the face of opposition"</div>
-        </div>
-
-        <!-- Breadcrumbs -->
         <div class="breadcrumb" id="breadcrumb"></div>
-
-        <!-- Navigation Buttons -->
         <div class="category-selector" id="categorySelector"></div>
-
-        <!-- Products -->
         <div class="products-section" id="productsSection" style="display: none;">
             <div class="section-title" id="productsTitle"></div>
             <div class="product-grid" id="productGrid"></div>
         </div>
     </div>
 
-    <!-- Footer -->
     <div class="footer">
         <div class="footer-content">
             <div class="footer-section">
@@ -144,7 +136,7 @@
             </div>
         </div>
         <div class="copyright">
-            © 2016-2025 Chutzpah Enterprises | "Guts, Audacity, Willingness to fly in the face of opposition"
+            © 2016-2026 Chutzpah Enterprises | "Guts, Audacity, Willingness to fly in the face of opposition"
         </div>
     </div>
 
@@ -158,7 +150,6 @@
     <script>
         const API_URL = 'https://chutzpah-final.onrender.com';
 
-        // EXACT MATCH TO YOUR FOLDERS
         const catalogStructure = {
             'Pathfinders': ['Patches & Insignia', 'Pathfinder Honor Sash', 'pins & awards'],
             'Adventurer': [], 
@@ -233,20 +224,20 @@
                 products = await res.json();
                 renderProducts();
             } catch (err) {
-                document.getElementById('productGrid').innerHTML = '<p style="color:red;">Failed to load products. Backend might be waking up.</p>';
+                document.getElementById('productGrid').innerHTML = '<p style="color:red; text-align:center; grid-column: span 2;">Failed to load products. Backend is waking up.</p>';
             }
         }
 
         function renderProducts() {
             const grid = document.getElementById('productGrid');
             if (products.length === 0) {
-                grid.innerHTML = '<p style="text-align:center;width:100%;">No products here yet.</p>';
+                grid.innerHTML = '<p style="text-align:center; grid-column: span 2;">No products here yet.</p>';
                 return;
             }
             grid.innerHTML = products.map(p => `
                 <div class="product-card">
                     <div class="product-img">
-                        ${p.image_url ? `<img src="${p.image_url}">` : `<div class="product-img-placeholder">📦</div>`}
+                        ${p.image_url ? `<img src="${p.image_url}" alt="${p.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=product-img-placeholder>📦</div>';">` : `<div class="product-img-placeholder">📦</div>`}
                     </div>
                     <div class="product-name">${p.name}</div>
                     <div class="product-price">KES ${parseFloat(p.price).toLocaleString()}</div>
@@ -264,7 +255,7 @@
             cart.push({ id, name, price });
             localStorage.setItem('chutzpah_cart', JSON.stringify(cart));
             updateCartUI();
-            showToast(`Added ${name} to cart`);
+            showToast(`Added ${name}`);
         }
         function removeFromCart(index) {
             cart.splice(index, 1);
@@ -291,7 +282,7 @@
                 total += item.price;
                 return `
                     <div class="cart-item">
-                        <div class="cart-item-info"><div class="cart-item-name">${item.name}</div></div>
+                        <div style="flex:1; font-weight:bold;">${item.name}</div>
                         <div class="cart-item-price">KES ${item.price.toLocaleString()}</div>
                         <button class="cart-item-remove" onclick="removeFromCart(${i})">×</button>
                     </div>
@@ -471,7 +462,7 @@
                 
                 content.innerHTML = `
                     <div style="background:#f9f9f9; padding:1rem; border-radius:8px; margin-bottom:1rem;">
-                        <h4>Add Product</h4>
+                        <h4>Add Product with Image</h4>
                         <input type="text" id="pName" placeholder="Product Name" style="width:100%;margin-bottom:0.5rem;padding:0.5rem;">
                         <input type="number" id="pPrice" placeholder="Price (KES)" style="width:100%;margin-bottom:0.5rem;padding:0.5rem;">
                         
@@ -481,15 +472,15 @@
                             ${catOptions}
                         </select>
                         
-                        <label>Sub Category</label>
+                        <label>Sub Category (If any)</label>
                         <select id="pSubCat" style="width:100%;margin-bottom:0.5rem;padding:0.5rem;">
                             <option value="">-- Select Category First --</option>
                         </select>
     
-                        <label>Image Path (e.g., images/Adventurer/Chickens Award.png)</label>
-                        <input type="text" id="pImage" placeholder="images/..." style="width:100%;margin-bottom:0.5rem;padding:0.5rem;">
+                        <label>Upload Image File (From Device)</label>
+                        <input type="file" id="pImageFile" accept="image/*" style="width:100%;margin-bottom:0.5rem;padding:0.5rem;">
                         
-                        <button onclick="addProduct()" class="btn-primary">Add Product</button>
+                        <button onclick="addProduct()" class="btn-primary">Upload & Add Product</button>
                     </div>
                     <hr style="margin-bottom:1rem;">
                     ${renderAdminProductsHTML()}
@@ -544,21 +535,31 @@
             const price = document.getElementById('pPrice').value;
             const category = document.getElementById('pCat').value;
             const sub_category = document.getElementById('pSubCat').value;
-            const image_url = document.getElementById('pImage').value;
+            const fileInput = document.getElementById('pImageFile');
 
             if (!name || !price || !category) return showToast('Fill all required fields');
+            if (!fileInput.files[0]) return showToast('Please select an image file');
+
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('price', price);
+            formData.append('category', category);
+            formData.append('sub_category', sub_category);
+            formData.append('image', fileInput.files[0]);
 
             try {
+                showToast('Uploading image to Cloudinary...');
                 const res = await fetch(`${API_URL}/api/products`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': userToken },
-                    body: JSON.stringify({ name, price, category, sub_category, image_url })
+                    headers: { 'Authorization': userToken }, // Do NOT set Content-Type here, browser does it for FormData
+                    body: formData
                 });
+                
                 if (res.ok) {
                     showToast('Product added successfully!');
                     document.getElementById('pName').value = '';
                     document.getElementById('pPrice').value = '';
-                    document.getElementById('pImage').value = '';
+                    document.getElementById('pImageFile').value = '';
                     fetchProducts();
                     switchAdminTab('products', document.querySelector('.admin-tab'));
                 } else {
