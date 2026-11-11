@@ -11,18 +11,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// --- CLOUDINARY CONFIG ---
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// Multer setup for temporary memory storage
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-// --- DATABASE CONNECTION ---
 const pool = mysql.createPool({
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
@@ -32,7 +29,6 @@ const pool = mysql.createPool({
     ssl: { rejectUnauthorized: false }
 });
 
-// --- MIDDLEWARE (For other routes) ---
 const verifyToken = (req, res, next) => {
     const token = req.headers['authorization'];
     if (!token) return res.status(403).json({ message: "No token provided" });
@@ -43,9 +39,6 @@ const verifyToken = (req, res, next) => {
     });
 };
 
-// --- ROUTES ---
-
-// 1. GET PRODUCTS
 app.get('/api/products', async (req, res) => {
     try {
         const { category, sub_category } = req.query;
@@ -61,13 +54,11 @@ app.get('/api/products', async (req, res) => {
     } catch (err) { res.status(500).json({ message: "Failed to fetch products" }); }
 });
 
-// 2. ADD PRODUCT (Admin Check temporarily removed for testing)
 app.post('/api/products', upload.single('image'), async (req, res) => {
     const { name, category, sub_category, price, image_url } = req.body;
     let final_image_url = image_url || null;
 
     try {
-        // If a file was uploaded, send to Cloudinary
         if (req.file) {
             const b64 = Buffer.from(req.file.buffer).toString("base64");
             let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
@@ -86,7 +77,6 @@ app.post('/api/products', upload.single('image'), async (req, res) => {
     }
 });
 
-// 3. UPDATE PRICE
 app.put('/api/products/:id/price', verifyToken, async (req, res) => {
     if (req.user.role !== 'admin') return res.status(403).json({ message: "Admin only" });
     try {
@@ -95,7 +85,6 @@ app.put('/api/products/:id/price', verifyToken, async (req, res) => {
     } catch (err) { res.status(500).json({ success: false }); }
 });
 
-// 4. TOGGLE HIDE/SHOW
 app.put('/api/products/:id/toggle', verifyToken, async (req, res) => {
     if (req.user.role !== 'admin') return res.status(403).json({ message: "Admin only" });
     try {
@@ -104,7 +93,6 @@ app.put('/api/products/:id/toggle', verifyToken, async (req, res) => {
     } catch (err) { res.status(500).json({ success: false }); }
 });
 
-// 5. AUTH
 app.post('/api/login', async (req, res) => {
     const phone = req.body.phone || req.body.email; 
     const password = req.body.password;
@@ -129,7 +117,6 @@ app.post('/api/register', async (req, res) => {
     } catch (err) { res.status(500).json({ success: false, message: "Phone exists" }); }
 });
 
-// 6. ORDERS
 app.post('/api/orders', async (req, res) => {
     const { orderId, customerName, phone, items, total } = req.body;
     try {
