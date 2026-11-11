@@ -32,11 +32,11 @@
         .category-selector { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
         .category-btn { flex: 1; padding: 0.8rem 0.5rem; background: white; border: 1px solid #eee; border-radius: 8px; cursor: pointer; transition: all 0.3s; text-align: center; min-width: 100px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
         .category-btn:hover { border-color: #8B0000; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transform: translateY(-2px); }
-        .category-btn h3 { font-size: 0.8rem; color: #333; word-wrap: break-word; }
+        .category-btn h3 { font-size: 0.8rem; color: #333; word-wrap: break-word; text-transform: uppercase; }
         
         /* Products - Jumia Style Grid */
         .products-section { background: transparent; margin-bottom: 2rem; }
-        .section-title { font-size: 1.1rem; margin-bottom: 1rem; color: #333; font-weight: bold; }
+        .section-title { font-size: 1.1rem; margin-bottom: 1rem; color: #333; font-weight: bold; text-transform: uppercase; }
         .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
         .product-card { background: white; border-radius: 8px; padding: 0.5rem; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; box-shadow: 0 1px 4px rgba(0,0,0,0.05); cursor: pointer; position: relative; }
         .product-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
@@ -161,11 +161,12 @@
     <script>
         const API_URL = 'https://chutzpah-final.onrender.com';
 
+        // EXACT MATCH TO YOUR CLOUDINARY FOLDERS
         const catalogStructure = {
-            'Pathfinders': ['Patches & Insignia', 'Pathfinder Honor Sash', 'pins & awards'],
+            'Pathfinders': ['PATCHES AND INSIGNIA', 'PATHFINDER HONOUR SASH', 'PINS AND AWARD'],
             'Adventurer': [], 
             'MasterGuide': [], 
-            'Accesories': ['ADVENTIST YOUTH MINISTRIES', 'Ambassador']
+            'Accesories': ['ADVENTIST YOUTH MINISTRIES', 'AMBASSADOR']
         };
 
         let currentCategory = null, currentSubCategory = null;
@@ -552,7 +553,6 @@
 
             if (!name || !price || !category) return showToast('Fill all required fields');
 
-            // Option 1: If there is a Cloudinary link, use it
             if (imageUrlInput) {
                 try {
                     const res = await fetch(`${API_URL}/api/products`, {
@@ -574,7 +574,6 @@
                 return;
             }
 
-            // Option 2: If there is a file, upload it to Cloudinary via backend
             if (fileInput.files[0]) {
                 const formData = new FormData();
                 formData.append('name', name);
