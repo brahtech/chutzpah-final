@@ -61,25 +61,25 @@ app.get('/api/products', async (req, res) => {
     } catch (err) { res.status(500).json({ message: "Failed to fetch products" }); }
 });
 
-// 2. ADD PRODUCT WITH IMAGE (Admin Only)
+// 2. ADD PRODUCT (Handles both Cloudinary URL and File Upload)
 app.post('/api/products', verifyToken, upload.single('image'), async (req, res) => {
     if (req.user.role !== 'admin') return res.status(403).json({ message: "Admin only" });
 
-    const { name, category, sub_category, price } = req.body;
-    let image_url = null;
+    const { name, category, sub_category, price, image_url } = req.body;
+    let final_image_url = image_url || null;
 
     try {
-        // Upload to Cloudinary if a file was provided
+        // If a file was uploaded, send to Cloudinary
         if (req.file) {
             const b64 = Buffer.from(req.file.buffer).toString("base64");
             let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
             const result = await cloudinary.uploader.upload(dataURI, { folder: "chutzpah_products" });
-            image_url = result.secure_url;
+            final_image_url = result.secure_url;
         }
 
         await pool.query(
             "INSERT INTO products (name, category, sub_category, price, image_url) VALUES (?, ?, ?, ?, ?)",
-            [name, category, sub_category || null, price, image_url]
+            [name, category, sub_category || null, price, final_image_url]
         );
         res.status(201).json({ success: true, message: "Product added!" });
     } catch (err) {
