@@ -8,8 +8,8 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; min-height: 100vh; display: flex; flex-direction: column; }
         
-        /* Header - Jumia Style */
-        .header { background: linear-gradient(135deg, #8B0000 0%, #A52A2A 100%); color: white; padding: 0.6rem 1rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        /* Header - Smaller for mobile */
+        .header { background: linear-gradient(135deg, #8B0000 0%, #A52A2A 100%); color: white; padding: 0.4rem 1rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
         .header-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
         .logo h1 { font-size: 1.2rem; letter-spacing: 1px; }
         .logo p { display: none; }
@@ -18,7 +18,12 @@
         .cart-icon:hover, .user-icon:hover, .admin-icon:hover, .contact-icon:hover { background: rgba(255,255,255,0.3); }
         .cart-count { position: absolute; top: -5px; right: -5px; background: #f68b1e; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: bold; }
         
-        /* Navigation & Breadcrumbs */
+        /* Description Banner */
+        .description-banner { background: #fff; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 1px 4px rgba(0,0,0,0.05); text-align: center; }
+        .description-banner h2 { font-size: 1.2rem; color: #8B0000; margin-bottom: 0.5rem; }
+        .description-banner p { font-size: 0.85rem; color: #555; font-style: italic; }
+
+        /* Navigation */
         .container { max-width: 1400px; margin: 1rem auto; padding: 0 1rem; flex-grow: 1; width: 100%; }
         .breadcrumb { font-size: 0.8rem; color: #666; margin-bottom: 1rem; display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
         .breadcrumb span { cursor: pointer; color: #8B0000; font-weight: bold; }
@@ -107,6 +112,12 @@
     </div>
 
     <div class="container">
+        <div class="description-banner">
+            <h2>Chutzpah Enterprises</h2>
+            <p>"Guts, Audacity, Willingness to fly in the face of opposition"</p>
+            <p style="margin-top:0.5rem; font-size:0.8rem;">📍 Johannesburg Plaza, 2nd fl. Rm 7, Eldoret</p>
+        </div>
+
         <div class="breadcrumb" id="breadcrumb"></div>
         <div class="category-selector" id="categorySelector"></div>
         <div class="products-section" id="productsSection" style="display: none;">
@@ -170,7 +181,6 @@
             loadCategory(null);
         }
 
-        // --- NAVIGATION ---
         function loadCategory(category, subCategory = null) {
             currentCategory = category;
             currentSubCategory = subCategory;
@@ -214,7 +224,6 @@
             `).join('');
         }
 
-        // --- FETCH PRODUCTS ---
         async function fetchProducts() {
             try {
                 let url = `${API_URL}/api/products?category=${currentCategory}`;
@@ -462,7 +471,7 @@
                 
                 content.innerHTML = `
                     <div style="background:#f9f9f9; padding:1rem; border-radius:8px; margin-bottom:1rem;">
-                        <h4>Add Product with Image</h4>
+                        <h4>Add Product</h4>
                         <input type="text" id="pName" placeholder="Product Name" style="width:100%;margin-bottom:0.5rem;padding:0.5rem;">
                         <input type="number" id="pPrice" placeholder="Price (KES)" style="width:100%;margin-bottom:0.5rem;padding:0.5rem;">
                         
@@ -477,10 +486,13 @@
                             <option value="">-- Select Category First --</option>
                         </select>
     
-                        <label>Upload Image File (From Device)</label>
+                        <label>Paste Cloudinary Link (e.g., https://res.cloudinary.com/...)</label>
+                        <input type="text" id="pImageUrl" placeholder="https://res.cloudinary.com/..." style="width:100%;margin-bottom:0.5rem;padding:0.5rem;">
+                        
+                        <div style="text-align:center; margin-bottom:0.5rem; font-size:0.8rem; color:#666;">— OR Upload From Device —</div>
                         <input type="file" id="pImageFile" accept="image/*" style="width:100%;margin-bottom:0.5rem;padding:0.5rem;">
                         
-                        <button onclick="addProduct()" class="btn-primary">Upload & Add Product</button>
+                        <button onclick="addProduct()" class="btn-primary">Save Product</button>
                     </div>
                     <hr style="margin-bottom:1rem;">
                     ${renderAdminProductsHTML()}
@@ -535,37 +547,65 @@
             const price = document.getElementById('pPrice').value;
             const category = document.getElementById('pCat').value;
             const sub_category = document.getElementById('pSubCat').value;
+            const imageUrlInput = document.getElementById('pImageUrl').value;
             const fileInput = document.getElementById('pImageFile');
 
             if (!name || !price || !category) return showToast('Fill all required fields');
-            if (!fileInput.files[0]) return showToast('Please select an image file');
 
-            const formData = new FormData();
-            formData.append('name', name);
-            formData.append('price', price);
-            formData.append('category', category);
-            formData.append('sub_category', sub_category);
-            formData.append('image', fileInput.files[0]);
+            // Option 1: If there is a Cloudinary link, use it
+            if (imageUrlInput) {
+                try {
+                    const res = await fetch(`${API_URL}/api/products`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': userToken },
+                        body: JSON.stringify({ name, price, category, sub_category, image_url: imageUrlInput })
+                    });
+                    if (res.ok) {
+                        showToast('Product added successfully!');
+                        document.getElementById('pName').value = '';
+                        document.getElementById('pPrice').value = '';
+                        document.getElementById('pImageUrl').value = '';
+                        fetchProducts();
+                        switchAdminTab('products', document.querySelector('.admin-tab'));
+                    } else {
+                        showToast('Failed to add product.');
+                    }
+                } catch (err) { showToast('Error adding product'); }
+                return;
+            }
 
-            try {
-                showToast('Uploading image to Cloudinary...');
-                const res = await fetch(`${API_URL}/api/products`, {
-                    method: 'POST',
-                    headers: { 'Authorization': userToken }, // Do NOT set Content-Type here, browser does it for FormData
-                    body: formData
-                });
-                
-                if (res.ok) {
-                    showToast('Product added successfully!');
-                    document.getElementById('pName').value = '';
-                    document.getElementById('pPrice').value = '';
-                    document.getElementById('pImageFile').value = '';
-                    fetchProducts();
-                    switchAdminTab('products', document.querySelector('.admin-tab'));
-                } else {
-                    showToast('Failed to add product.');
-                }
-            } catch (err) { showToast('Error adding product'); }
+            // Option 2: If there is a file, upload it to Cloudinary via backend
+            if (fileInput.files[0]) {
+                const formData = new FormData();
+                formData.append('name', name);
+                formData.append('price', price);
+                formData.append('category', category);
+                formData.append('sub_category', sub_category);
+                formData.append('image', fileInput.files[0]);
+
+                try {
+                    showToast('Uploading image...');
+                    const res = await fetch(`${API_URL}/api/products`, {
+                        method: 'POST',
+                        headers: { 'Authorization': userToken },
+                        body: formData
+                    });
+                    
+                    if (res.ok) {
+                        showToast('Product added successfully!');
+                        document.getElementById('pName').value = '';
+                        document.getElementById('pPrice').value = '';
+                        document.getElementById('pImageFile').value = '';
+                        fetchProducts();
+                        switchAdminTab('products', document.querySelector('.admin-tab'));
+                    } else {
+                        showToast('Failed to add product.');
+                    }
+                } catch (err) { showToast('Error adding product'); }
+                return;
+            }
+
+            showToast('Please provide an image link or upload a file.');
         }
 
         async function editPrice(id, currentPrice) {
