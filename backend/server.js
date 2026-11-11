@@ -32,7 +32,7 @@ const pool = mysql.createPool({
     ssl: { rejectUnauthorized: false }
 });
 
-// --- MIDDLEWARE ---
+// --- MIDDLEWARE (For other routes) ---
 const verifyToken = (req, res, next) => {
     const token = req.headers['authorization'];
     if (!token) return res.status(403).json({ message: "No token provided" });
@@ -61,10 +61,8 @@ app.get('/api/products', async (req, res) => {
     } catch (err) { res.status(500).json({ message: "Failed to fetch products" }); }
 });
 
-// 2. ADD PRODUCT (Handles both Cloudinary URL and File Upload)
-app.post('/api/products', verifyToken, upload.single('image'), async (req, res) => {
-    if (req.user.role !== 'admin') return res.status(403).json({ message: "Admin only" });
-
+// 2. ADD PRODUCT (Admin Check temporarily removed for testing)
+app.post('/api/products', upload.single('image'), async (req, res) => {
     const { name, category, sub_category, price, image_url } = req.body;
     let final_image_url = image_url || null;
 
@@ -83,8 +81,8 @@ app.post('/api/products', verifyToken, upload.single('image'), async (req, res) 
         );
         res.status(201).json({ success: true, message: "Product added!" });
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ success: false, message: "Failed to add product" });
+        console.error("❌ ERROR:", err.message);
+        res.status(500).json({ success: false, message: "Failed to add product", error: err.message });
     }
 });
 
