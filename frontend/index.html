@@ -300,6 +300,7 @@
             finally { btn.disabled = false; btn.innerText = '💳 Pay & Place Order'; }
         }
 
+        // --- AUTH (Email OTP) ---
         function openUserModal() {
             const body = document.getElementById('userModalBody');
             if (currentUser) {
@@ -335,7 +336,7 @@
                 <input type="text" id="regName" placeholder="Full Name" style="width:100%;padding:0.75rem;margin-bottom:0.5rem;border:1px solid #ddd;border-radius:8px;">
                 <input type="email" id="regEmail" placeholder="Email Address" style="width:100%;padding:0.75rem;margin-bottom:0.5rem;border:1px solid #ddd;border-radius:8px;">
                 <input type="password" id="regPassword" placeholder="Password" style="width:100%;padding:0.75rem;margin-bottom:0.5rem;border:1px solid #ddd;border-radius:8px;">
-                <button class="btn-primary" onclick="registerUser()">Create Account</button>
+                <button class="btn-primary" onclick="registerUser()">Send Verification Code</button>
             `;
         }
 
@@ -356,10 +357,37 @@
             const name = document.getElementById('regName').value;
             const email = document.getElementById('regEmail').value;
             const password = document.getElementById('regPassword').value;
+            
+            if (!name || !email || !password) return showToast('Fill all fields');
+
             try {
-                const res = await fetch(`${API_URL}/api/register`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, email, password }) });
-                if (res.ok) { showToast('Account created! Please login.'); showLogin(); }
-                else { showToast('Registration failed. Email might exist.'); }
+                showToast('Sending code to email...');
+                const res = await fetch(`${API_URL}/api/send-otp`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                
+                if (res.ok) {
+                    document.getElementById('authForm').innerHTML = `
+                        <p style="font-size:0.8rem; margin-bottom:0.5rem; color:green;">Code sent to ${email}</p>
+                        <input type="text" id="otpCode" placeholder="Enter 6-digit Code" style="width:100%;padding:0.75rem;margin-bottom:0.5rem;border:1px solid #ddd;border-radius:8px;">
+                        <button class="btn-primary" onclick="verifyOtp('${name}', '${email}', '${password}')">Verify & Create Account</button>
+                    `;
+                } else {
+                    showToast('Failed to send email.');
+                }
+            } catch (err) { showToast('Error'); }
+        }
+
+        async function verifyOtp(name, email, password) {
+            const code = document.getElementById('otpCode').value;
+            try {
+                const res = await fetch(`${API_URL}/api/verify-register`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password, code })
+                });
+                if (res.ok) { showToast('Account verified! Please login.'); showLogin(); }
+                else { showToast('Invalid code'); }
             } catch (err) { showToast('Error'); }
         }
 
