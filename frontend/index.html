@@ -13,26 +13,29 @@
         .header-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
         .logo h1 { font-size: 1.2rem; letter-spacing: 1px; }
         .logo p { display: none; }
+        .motto { font-size: 0.7rem; color: #FFD700; font-style: italic; margin-top: 0.2rem; }
         .header-right { display: flex; gap: 0.4rem; align-items: center; }
         .cart-icon, .user-icon, .admin-icon { position: relative; cursor: pointer; background: rgba(255,255,255,0.2); padding: 0.4rem 0.8rem; border-radius: 50px; font-size: 0.75rem; font-weight: bold; transition: background 0.3s; }
         .cart-icon:hover, .user-icon:hover, .admin-icon:hover { background: rgba(255,255,255,0.3); }
         .cart-count { position: absolute; top: -5px; right: -5px; background: #f68b1e; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: bold; }
         
+        /* WhatsApp Button */
+        .whatsapp-btn { position: fixed; bottom: 20px; right: 20px; background-color: #25D366; color: white; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 1000; text-decoration: none; font-size: 30px; }
+        .whatsapp-btn:hover { background-color: #128C7E; }
+
         /* Search Bar */
         .search-container { max-width: 1400px; margin: 1rem auto 0; padding: 0 1rem; }
         .search-box { display: flex; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
         .search-box input { flex: 1; border: none; padding: 0.8rem; font-size: 0.9rem; outline: none; }
         .search-box button { background: #f68b1e; color: white; border: none; padding: 0 1.5rem; font-weight: bold; cursor: pointer; }
 
-        /* Navigation */
+        /* Navigation & Products */
         .container { max-width: 1400px; margin: 1rem auto; padding: 0 1rem; flex-grow: 1; width: 100%; }
         .breadcrumb { font-size: 0.8rem; color: #666; margin-bottom: 1rem; display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
         .breadcrumb span { cursor: pointer; color: #8B0000; font-weight: bold; }
         .category-selector { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
         .category-btn { flex: 1; padding: 0.8rem 0.5rem; background: white; border: 1px solid #eee; border-radius: 8px; cursor: pointer; transition: all 0.3s; text-align: center; min-width: 100px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
         .category-btn h3 { font-size: 0.8rem; color: #333; text-transform: uppercase; }
-        
-        /* Products - Jumia Style Grid */
         .products-section { background: transparent; margin-bottom: 2rem; }
         .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
         .product-card { background: white; border-radius: 8px; padding: 0.5rem; transition: transform 0.2s; display: flex; flex-direction: column; box-shadow: 0 1px 4px rgba(0,0,0,0.05); position: relative; }
@@ -41,8 +44,18 @@
         .product-img-placeholder { font-size: 2rem; color: #ccc; }
         .product-name { font-size: 0.8rem; color: #333; margin-bottom: 0.2rem; flex-grow: 1; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .product-price { font-size: 1rem; font-weight: bold; color: #000; margin-bottom: 0.4rem; }
-        .add-to-cart { width: 100%; padding: 0.5rem; background: #f68b1e; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.75rem; }
+        .stock-badge { font-size: 0.7rem; font-weight: bold; margin-bottom: 0.4rem; }
+        .stock-ok { color: green; }
+        .stock-low { color: red; }
+
+        /* Quantity Selector */
+        .qty-container { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; background: #f9f9f9; border-radius: 4px; border: 1px solid #ddd; }
+        .qty-btn { background: none; border: none; padding: 0.2rem 0.8rem; font-size: 1.2rem; cursor: pointer; color: #8B0000; font-weight: bold; }
+        .qty-input { width: 40px; text-align: center; border: none; background: transparent; font-size: 0.9rem; font-weight: bold; outline: none; }
         
+        .add-to-cart { width: 100%; padding: 0.5rem; background: #f68b1e; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.75rem; }
+        .add-to-cart.disabled { background: #ccc; cursor: not-allowed; }
+
         /* Modals */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; }
         .modal.active { display: flex; }
@@ -51,8 +64,6 @@
         .modal-header { background: #8B0000; color: white; padding: 0.8rem; display: flex; justify-content: space-between; align-items: center; }
         .modal-body { padding: 1rem; overflow-y: auto; flex-grow: 1; }
         .btn-primary { background: #8B0000; color: white; border: none; padding: 0.6rem; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 0.5rem; font-size: 0.9rem;}
-        
-        /* Admin */
         .admin-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
         .admin-tab { padding: 0.4rem 0.8rem; cursor: pointer; background: #f0f0f0; border: none; border-radius: 6px; font-weight: bold; font-size: 0.8rem; }
         .admin-tab.active { background: #8B0000; color: white; }
@@ -63,9 +74,8 @@
         .cart-item-price { font-weight: bold; color: #8B0000; }
         .cart-item-remove { background: #ff4444; color: white; border: none; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; }
         .cart-total { padding: 1rem; background: #f5f5f5; font-weight: bold; font-size: 1rem; text-align: right; }
-        .toast { position: fixed; bottom: 20px; right: 20px; background: #f68b1e; color: white; padding: 0.6rem 1rem; border-radius: 6px; z-index: 1100; font-size: 0.9rem; font-weight: bold; }
+        .toast { position: fixed; bottom: 20px; left: 20px; background: #f68b1e; color: white; padding: 0.6rem 1rem; border-radius: 6px; z-index: 1100; font-size: 0.9rem; font-weight: bold; }
         
-        /* Footer */
         .footer { background: #1a1a2e; color: white; padding: 1.5rem 1rem; margin-top: auto; }
         .footer-content { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; }
         .footer-section h4 { margin-bottom: 0.5rem; color: #ffcc00; font-size: 0.9rem; }
@@ -85,6 +95,7 @@
             <div class="logo">
                 <h1>🛡️ CHUTZPAH ENTERPRISES</h1>
                 <p>Branding & General Trade</p>
+                <div class="motto">"Guts, Audacity, Willingness to fly in the face of opposition"</div>
             </div>
             <div class="header-right">
                 <div class="user-icon" onclick="openUserModal()">👤 <span id="userDisplayName" class="user-name">Guest</span></div>
@@ -94,7 +105,11 @@
         </div>
     </div>
 
-    <!-- Search Bar -->
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/254720470412?text=Hello%20Chutzpah%20Enterprises,%20I%20have%20an%20inquiry." target="_blank" class="whatsapp-btn">
+        <i class="fab fa-whatsapp"></i> 💬
+    </a>
+
     <div class="search-container">
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="Search products (e.g., Beret, Pin, Scarf)..." onkeyup="handleSearch()">
@@ -132,10 +147,8 @@
             <div style="padding:1rem;border-top:1px solid #eee;">
                 <label>📱 M-Pesa Number:</label>
                 <input type="tel" id="phoneNumber" style="width:100%;padding:0.75rem;border:1px solid #ddd;border-radius:8px;margin:0.5rem 0;" placeholder="254712345678">
-                
                 <label>📝 Order Notes (Optional):</label>
-                <textarea id="orderNotes" rows="2" style="width:100%;padding:0.75rem;border:1px solid #ddd;border-radius:8px;margin:0.5rem 0;" placeholder="e.g., Please deliver to the church office..."></textarea>
-                
+                <textarea id="orderNotes" rows="2" style="width:100%;padding:0.75rem;border:1px solid #ddd;border-radius:8px;margin:0.5rem 0;" placeholder="Any special instructions?"></textarea>
                 <button id="payBtn" onclick="processCheckout()" style="width:100%;padding:0.75rem;background:#4CAF50;color:white;border:none;border-radius:8px;font-weight:bold;">💳 Pay & Place Order</button>
             </div>
         </div>
@@ -183,7 +196,6 @@
             currentSubCategory = subCategory;
             searchQuery = ''; 
             document.getElementById('searchInput').value = '';
-
             let bc = `<span onclick="loadCategory(null)">Home</span>`;
             if (category) bc += ` > <span onclick="loadCategory('${category}')">${category}</span>`;
             if (subCategory) bc += ` > <span>${subCategory}</span>`;
@@ -242,26 +254,63 @@
                 grid.innerHTML = '<p style="text-align:center; grid-column: span 2;">No products found.</p>';
                 return;
             }
-            grid.innerHTML = filtered.map(p => `
+            grid.innerHTML = filtered.map(p => {
+                // Stock Logic
+                let stockBadge = '';
+                let isOutOfStock = false;
+                if (p.stock <= 0) {
+                    stockBadge = `<span class="stock-badge stock-low">Out of Stock</span>`;
+                    isOutOfStock = true;
+                } else if (p.stock < 5) {
+                    stockBadge = `<span class="stock-badge stock-low">Only ${p.stock} left!</span>`;
+                } else {
+                    stockBadge = `<span class="stock-badge stock-ok">${p.stock} in stock</span>`;
+                }
+
+                return `
                 <div class="product-card">
                     <div class="product-img">${p.image_url ? `<img src="${p.image_url}">` : `<div class="product-img-placeholder">📦</div>`}</div>
                     <div class="product-name">${p.name}</div>
                     <div class="product-price">KES ${parseFloat(p.price).toLocaleString()}</div>
-                    <button class="add-to-cart" onclick="addToCart(${p.id}, '${p.name}', ${p.price})">Add to Cart</button>
+                    ${stockBadge}
+                    
+                    <!-- Quantity Selector -->
+                    <div class="qty-container">
+                        <button class="qty-btn" onclick="changeQty(this, -1)" ${isOutOfStock ? 'disabled' : ''}>-</button>
+                        <input type="number" class="qty-input" value="1" min="1" max="${p.stock}" readonly>
+                        <button class="qty-btn" onclick="changeQty(this, 1, ${p.stock})" ${isOutOfStock ? 'disabled' : ''}>+</button>
+                    </div>
+                    
+                    <button class="add-to-cart ${isOutOfStock ? 'disabled' : ''}" onclick="addToCartFromCard(this, ${p.id}, '${p.name}', ${p.price})" ${isOutOfStock ? 'disabled' : ''}>${isOutOfStock ? 'Out of Stock' : 'Add to Cart'}</button>
                 </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
-        function loadCart() {
-            cart = JSON.parse(localStorage.getItem('chutzpah_cart')) || [];
-            updateCartUI();
+        function changeQty(btn, change, maxStock = 999) {
+            const input = btn.parentElement.querySelector('.qty-input');
+            let val = parseInt(input.value) + change;
+            if (val < 1) val = 1;
+            if (val > maxStock) {
+                val = maxStock;
+                showToast(`Only ${maxStock} available`);
+            }
+            input.value = val;
         }
-        function addToCart(id, name, price) {
-            cart.push({ id, name, price });
+
+        // --- CART ---
+        function loadCart() { cart = JSON.parse(localStorage.getItem('chutzpah_cart')) || []; updateCartUI(); }
+        
+        function addToCartFromCard(btn, id, name, price) {
+            const qty = parseInt(btn.parentElement.querySelector('.qty-input').value);
+            for (let i = 0; i < qty; i++) {
+                cart.push({ id, name, price });
+            }
             localStorage.setItem('chutzpah_cart', JSON.stringify(cart));
             updateCartUI();
-            showToast(`Added ${name}`);
+            showToast(`Added ${qty} x ${name}`);
         }
+
         function removeFromCart(index) { cart.splice(index, 1); localStorage.setItem('chutzpah_cart', JSON.stringify(cart)); updateCartUI(); displayCart(); }
         function updateCartUI() { document.getElementById('cartCount').innerText = cart.length; }
         function openCart() { displayCart(); document.getElementById('cartModal').classList.add('active'); }
@@ -300,7 +349,7 @@
             finally { btn.disabled = false; btn.innerText = '💳 Pay & Place Order'; }
         }
 
-        // --- AUTH (Email OTP) ---
+        // --- AUTH & ADMIN (Same as before, but admin can edit stock) ---
         function openUserModal() {
             const body = document.getElementById('userModalBody');
             if (currentUser) {
@@ -349,7 +398,7 @@
                 if (data.success) {
                     localStorage.setItem('chutzpah_token', data.token); localStorage.setItem('chutzpah_user', JSON.stringify(data.user));
                     currentUser = data.user; updateUserUI(); closeModal('userModal'); showToast('Welcome back!');
-                } else { showToast(data.message || 'Login failed'); }
+                } else { showToast(data.message); }
             } catch (err) { showToast('Error'); }
         }
 
@@ -357,35 +406,24 @@
             const name = document.getElementById('regName').value;
             const email = document.getElementById('regEmail').value;
             const password = document.getElementById('regPassword').value;
-            
             if (!name || !email || !password) return showToast('Fill all fields');
-
             try {
                 showToast('Sending code to email...');
-                const res = await fetch(`${API_URL}/api/send-otp`, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email })
-                });
-                
+                const res = await fetch(`${API_URL}/api/send-otp`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
                 if (res.ok) {
                     document.getElementById('authForm').innerHTML = `
                         <p style="font-size:0.8rem; margin-bottom:0.5rem; color:green;">Code sent to ${email}</p>
                         <input type="text" id="otpCode" placeholder="Enter 6-digit Code" style="width:100%;padding:0.75rem;margin-bottom:0.5rem;border:1px solid #ddd;border-radius:8px;">
                         <button class="btn-primary" onclick="verifyOtp('${name}', '${email}', '${password}')">Verify & Create Account</button>
                     `;
-                } else {
-                    showToast('Failed to send email.');
-                }
+                } else { showToast('Failed to send email'); }
             } catch (err) { showToast('Error'); }
         }
 
         async function verifyOtp(name, email, password) {
             const code = document.getElementById('otpCode').value;
             try {
-                const res = await fetch(`${API_URL}/api/verify-register`, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, email, password, code })
-                });
+                const res = await fetch(`${API_URL}/api/verify-register`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, email, password, code }) });
                 if (res.ok) { showToast('Account verified! Please login.'); showLogin(); }
                 else { showToast('Invalid code'); }
             } catch (err) { showToast('Error'); }
@@ -428,6 +466,7 @@
                         <h4>Add Product</h4>
                         <input type="text" id="pName" placeholder="Product Name">
                         <input type="number" id="pPrice" placeholder="Price (KES)">
+                        <input type="number" id="pStock" placeholder="Stock Quantity (e.g., 10)">
                         <select id="pCat" onchange="updateSubCats()"><option value="">-- Select Category --</option>${catOptions}</select>
                         <select id="pSubCat"><option value="">-- Select Category First --</option></select>
                         <input type="text" id="pImageUrl" placeholder="Paste Cloudinary Link">
@@ -466,8 +505,12 @@
             if(products.length === 0) return '<p>No products yet.</p>';
             return products.map(p => `
                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #eee; padding:0.5rem 0; font-size:0.85rem;">
-                    <div><strong>${p.name}</strong> - KES ${p.price}</div>
+                    <div>
+                        <strong>${p.name}</strong> - KES ${p.price} <br>
+                        <span style="font-size:0.7rem; color:#666;">Stock: ${p.stock}</span>
+                    </div>
                     <div style="display:flex; gap:0.5rem;">
+                        <button onclick="editStock(${p.id}, ${p.stock})" style="background:#2196F3;color:white;border:none;padding:0.25rem 0.5rem;border-radius:4px;">Stock</button>
                         <button onclick="editPrice(${p.id}, ${p.price})" style="background:#4CAF50;color:white;border:none;padding:0.25rem 0.5rem;border-radius:4px;">Price</button>
                         <button onclick="toggleProduct(${p.id}, ${p.is_hidden})" style="background:#ff9800;color:white;border:none;padding:0.25rem 0.5rem;border-radius:4px;">${p.is_hidden ? 'Show' : 'Hide'}</button>
                     </div>
@@ -478,6 +521,7 @@
         async function addProduct() {
             const name = document.getElementById('pName').value;
             const price = document.getElementById('pPrice').value;
+            const stock = document.getElementById('pStock').value;
             const category = document.getElementById('pCat').value;
             const sub_category = document.getElementById('pSubCat').value;
             const imageUrlInput = document.getElementById('pImageUrl').value;
@@ -486,11 +530,11 @@
             if (!name || !price || !category) return showToast('Fill required fields');
 
             if (imageUrlInput) {
-                await fetch(`${API_URL}/api/products`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': userToken }, body: JSON.stringify({ name, price, category, sub_category, image_url: imageUrlInput }) });
+                await fetch(`${API_URL}/api/products`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': userToken }, body: JSON.stringify({ name, price, stock, category, sub_category, image_url: imageUrlInput }) });
                 showToast('Product added!'); fetchProducts(); openAdminDashboard();
             } else if (fileInput.files[0]) {
                 const formData = new FormData();
-                formData.append('name', name); formData.append('price', price); formData.append('category', category); formData.append('sub_category', sub_category); formData.append('image', fileInput.files[0]);
+                formData.append('name', name); formData.append('price', price); formData.append('stock', stock); formData.append('category', category); formData.append('sub_category', sub_category); formData.append('image', fileInput.files[0]);
                 await fetch(`${API_URL}/api/products`, { method: 'POST', headers: { 'Authorization': userToken }, body: formData });
                 showToast('Product added!'); fetchProducts(); openAdminDashboard();
             }
@@ -501,6 +545,13 @@
             if (!newPrice || isNaN(newPrice)) return;
             await fetch(`${API_URL}/api/products/${id}/price`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': userToken }, body: JSON.stringify({ price: newPrice }) });
             showToast('Price updated!'); await fetchProducts(); switchAdminTab('products', document.querySelector('.admin-tab'));
+        }
+
+        async function editStock(id, currentStock) {
+            const newStock = prompt("Enter new stock quantity:", currentStock);
+            if (newStock === null || isNaN(newStock)) return;
+            await fetch(`${API_URL}/api/products/${id}/stock`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': userToken }, body: JSON.stringify({ stock: newStock }) });
+            showToast('Stock updated!'); await fetchProducts(); switchAdminTab('products', document.querySelector('.admin-tab'));
         }
 
         async function toggleProduct(id, currentHiddenStatus) {
